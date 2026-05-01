@@ -6,11 +6,6 @@
  */
 import PageLayout from '@layouts/PageLayout.astro';
 
-export function getStaticPaths() {
-  // 'design' has its own page at services/design/index.astro
-  return SERVICES.filter(s => s.slug !== 'design').map(s => ({ params: { slug: s.slug } }));
-}
-
 interface Service {
   slug:        string;
   title:       string;
@@ -106,6 +101,11 @@ const SERVICES: Service[] = [
     ],
   },
 ];
+
+export function getStaticPaths() {
+  // 'design' has its own page at services/design/index.astro
+  return SERVICES.filter(s => s.slug !== 'design').map(s => ({ params: { slug: s.slug } }));
+}
 
 const { slug } = Astro.params;
 const service = SERVICES.find(s => s.slug === slug);
