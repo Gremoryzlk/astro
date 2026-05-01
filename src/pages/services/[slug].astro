@@ -16,7 +16,8 @@ interface Service {
   faq:         { q: string; a: string }[];
 }
 
-const SERVICES: Service[] = [
+export function getStaticPaths() {
+  const SERVICES: Service[] = [
   {
     slug:  'foundation',
     title: 'Фундамент под ключ',
@@ -100,16 +101,13 @@ const SERVICES: Service[] = [
       { q: 'Вы работаете с чужими проектами?', a: 'Да. Предоставьте дизайн-проект или хотя бы ТЗ — мы рассчитаем стоимость и сроки.' },
     ],
   },
-];
-
-export function getStaticPaths() {
+  ];
   // 'design' has its own page at services/design/index.astro
-  return SERVICES.filter(s => s.slug !== 'design').map(s => ({ params: { slug: s.slug } }));
+  return SERVICES.filter(s => s.slug !== 'design').map(s => ({ params: { slug: s.slug }, props: { service: s } }));
 }
 
+const { service } = Astro.props as { service: Service };
 const { slug } = Astro.params;
-const service = SERVICES.find(s => s.slug === slug);
-if (!service) return Astro.redirect('/services/');
 ---
 
 <PageLayout title={service.title} description={service.description}>
