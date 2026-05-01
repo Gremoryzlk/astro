@@ -1,0 +1,78 @@
+---
+/**
+ * PortfolioCard.astro
+ * Карточка объекта портфолио.
+ * CSS-эффект: ч/б → цвет при hover — реализован чистым CSS в design-system.
+ */
+import type { PortfolioObject } from '@lib/types';
+
+interface Props {
+  object:  PortfolioObject;
+  index?:  number;
+  /** Теги для JS-фильтра на странице портфолио */
+  tags?:   string[];
+}
+
+const { object: o, index = 0, tags = [] } = Astro.props;
+
+const delay = Math.min(index % 3, 4) as 0 | 1 | 2 | 3 | 4;
+const hasImage = o.heroImage && !o.heroImage.includes('placeholder');
+
+// Нормализуем тег материала → kebab-case для фильтра
+function materialTag(walls: string): string {
+  const map: Record<string, string> = {
+    'Газобетон':       'gazobeton',
+    'Кирпич':          'kirpich',
+    'Керамический блок': 'keramoblok',
+    'Керамоблок':      'keramoblok',
+  };
+  return map[walls] ?? walls.toLowerCase().replace(/\s+/g, '-');
+}
+
+const allTags = [
+  materialTag(o.walls),
+  `${o.floors}etazh${o.floors === 1 ? '' : 'a'}`,
+  o.area <= 150 ? 'do150' : o.area <= 250 ? '150-250' : 'ot250',
+  ...tags,
+].join(' ');
+---
+
+<a
+  href={`/portfolio/${o.slug}/`}
+  class="portfolio-card"
+  data-pf-tags={allTags}
+  data-reveal
+  data-reveal-delay={delay}
+  aria-label={`${o.name} — ${o.walls}`}
+>
+  {hasImage ? (
+    <img
+      class="portfolio-card__image"
+      src={o.heroImage}
+      alt={`Фото объекта: ${o.name}`}
+      loading="lazy"
+      decoding="async"
+      width="480"
+      height="360"
+    />
+  ) : (
+    <div
+      class="portfolio-card__image"
+      style={`background:linear-gradient(135deg, hsl(${(index * 37) % 360},35%,28%), hsl(${(index * 37 + 20) % 360},30%,18%))`}
+      aria-hidden="true"
+    ></div>
+  )}
+
+  <div class="portfolio-card__overlay" aria-hidden="true"></div>
+
+  <div class="portfolio-card__info">
+    <div class="portfolio-card__name">{o.name}</div>
+    <div class="portfolio-card__material">{o.walls}</div>
+  </div>
+
+  <div class="portfolio-card__arrow" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+      <path d="M7 17L17 7M17 7H7M17 7v10"/>
+    </svg>
+  </div>
+</a>

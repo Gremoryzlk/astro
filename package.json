@@ -1,0 +1,23 @@
+{
+  "name": "chast-dushi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт строительной компании «Часть Души»",
+  "scripts": {
+    "dev":     "astro dev",
+    "build":   "astro build",
+    "preview": "astro preview",
+    "check":   "astro check",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "astro": "^4.8.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.7.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

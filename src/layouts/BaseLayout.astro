@@ -1,0 +1,92 @@
+---
+/**
+ * BaseLayout.astro
+ * Корневой лейаут — используется всеми страницами.
+ * Инжектирует <head> с SEO, подключает глобальные стили и скрипты.
+ */
+import site from '@data/site.json';
+import '@styles/global.css';
+
+interface Props {
+  title?:       string;
+  description?: string;
+  ogImage?:     string;
+  noIndex?:     boolean;
+  canonicalUrl?: string;
+}
+
+const {
+  title:       rawTitle,
+  description: rawDesc,
+  ogImage      = site.seo.ogImage,
+  noIndex      = false,
+  canonicalUrl,
+} = Astro.props;
+
+const pageTitle = rawTitle
+  ? site.seo.titleTemplate.replace('%s', rawTitle)
+  : site.seo.defaultTitle;
+
+const pageDesc = rawDesc ?? site.seo.defaultDescription;
+
+const canonical = canonicalUrl
+  ? new URL(canonicalUrl, Astro.site).href
+  : new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0F3D2E">
+
+  <!-- SEO -->
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDesc}>
+  {noIndex && <meta name="robots" content="noindex,nofollow">}
+  <link rel="canonical" href={canonical}>
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content={pageTitle}>
+  <meta property="og:description" content={pageDesc}>
+  <meta property="og:image"       content={new URL(ogImage, Astro.site).href}>
+  <meta property="og:url"         content={canonical}>
+  <meta property="og:locale"      content="ru_RU">
+  <meta property="og:site_name"   content={site.company.name}>
+
+  <!-- Fonts — preconnect первым, потом async load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    >
+  </noscript>
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+
+  <!-- Slot for page-level head additions (schemas, etc.) -->
+  <slot name="head" />
+</head>
+<body>
+  <slot />
+
+  <!--
+    Core script runs on every page.
+    Astro compiles this TypeScript automatically — no manual build step needed.
+  -->
+  <script>
+    import '@scripts/core.ts';
+  </script>
+</body>
+</html>

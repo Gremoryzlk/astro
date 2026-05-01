@@ -1,0 +1,423 @@
+[
+  {
+    "slug": "tk-2",
+    "name": "Проект ТК-2",
+    "floors": 1,
+    "area": 143,
+    "rooms": 4,
+    "baths": 2,
+    "price": 8750000,
+    "material": "Газобетон",
+    "badge": null,
+    "promo": {
+      "text": "Фиксируем стоимость дома только до 10.03.2026",
+      "expiresAt": "2026-03-10"
+    },
+    "image": "/assets/images/projects/tk-2.jpg",
+    "renders": [
+      "/assets/images/projects/tk-2.jpg",
+      "/assets/images/projects/tk-2-2.jpg",
+      "/assets/images/projects/tk-2-3.jpg"
+    ],
+    "floorPlans": [
+      {
+        "label": "1 этаж",
+        "area": 143,
+        "image": "/assets/images/plans/tk-2-plan-1.jpg"
+      }
+    ],
+    "descriptionShort": "Одноэтажный дом с четырьмя спальнями и продуманным функциональным пространством. Лаконичная архитектура и панорамное остекление.",
+    "descriptionFull": "Современный одноэтажный дом для круглогодичного проживания. Монолитная плита и стены из газобетона обеспечивают комфортный микроклимат.\n\nПанорамное остекление гостиной объединяет интерьер с природой. Планировка спроектирована с двумя изолированными санузлами и просторной хозяйской спальней с гардеробной. Кухня-гостиная 38 м² — сердце дома.",
+    "komplektatsiya": [
+      {
+        "name": "Газоблок",
+        "price": 4981336,
+        "items": [
+          "Подготовительные работы",
+          "Фундамент",
+          "Стены (газобетон D400)",
+          "Монолитный пояс",
+          "Перекрытия",
+          "Кровля",
+          "Окна",
+          "Двери"
+        ]
+      },
+      {
+        "name": "Керамоблок",
+        "price": 5149928,
+        "items": [
+          "Подготовительные работы",
+          "Фундамент",
+          "Стены (керамический блок)",
+          "Монолитный пояс",
+          "Перекрытия",
+          "Кровля",
+          "Окна",
+          "Двери"
+        ]
+      },
+      {
+        "name": "Кирпич",
+        "price": 5407900,
+        "items": [
+          "Подготовительные работы",
+          "Фундамент",
+          "Стены (кирпич)",
+          "Монолитный пояс",
+          "Перекрытия",
+          "Кровля",
+          "Окна",
+          "Двери"
+        ]
+      }
+    ],
+    "timelinePhases": [
+      { "name": "Фундамент",        "durationMonths": 1.5, "color": "#0F3D2E" },
+      { "name": "Несущие стены",    "durationMonths": 2,   "color": "#1a6b4e" },
+      { "name": "Кровля",           "durationMonths": 1,   "color": "#2d8a68" },
+      { "name": "Утепление",        "durationMonths": 0.5, "color": "#3fa07c" },
+      { "name": "Инж. коммуникации","durationMonths": 1,   "color": "#52b690" },
+      { "name": "Отделка фасада",   "durationMonths": 1,   "color": "#68c9a3" }
+    ],
+    "constructionMonths": 7,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "active",
+    "publishedAt": "2024-03-01",
+    "updatedAt": "2025-04-01"
+  },
+  {
+    "slug": "duet-4",
+    "name": "Проект Дуэт-4",
+    "floors": 2,
+    "area": 254,
+    "rooms": 5,
+    "baths": 4,
+    "price": 12800000,
+    "material": "Кирпич",
+    "badge": "new",
+    "promo": null,
+    "image": "/assets/images/projects/duet-4.jpg",
+    "renders": [
+      "/assets/images/projects/duet-4.jpg",
+      "/assets/images/projects/duet-4-2.jpg"
+    ],
+    "floorPlans": [
+      {
+        "label": "1 этаж",
+        "area": 142,
+        "image": "/assets/images/plans/duet-4-plan-1.jpg"
+      },
+      {
+        "label": "2 этаж",
+        "area": 112,
+        "image": "/assets/images/plans/duet-4-plan-2.jpg"
+      }
+    ],
+    "descriptionShort": "Двухэтажный дом в современном скандинавском стиле с террасой и большой гостиной-столовой с выходом в сад.",
+    "descriptionFull": "Просторный двухэтажный дом с пятью спальнями для большой семьи. Первый этаж отведён под общественные зоны: кухня-гостиная 52 м², рабочий кабинет, гостевая спальня с санузлом.\n\nВторой этаж — приватная зона: хозяйская спальня с гардеробной и ванной, три детские спальни с общим санузлом. Тёплая терраса 24 м² с панорамным видом на участок.",
+    "komplektatsiya": [
+      {
+        "name": "Кирпич",
+        "price": 8640000,
+        "items": [
+          "Подготовительные работы",
+          "Фундамент монолитный",
+          "Стены из облицовочного кирпича",
+          "Монолитные перекрытия",
+          "Стропильная кровля",
+          "Окна из профиля 70 мм",
+          "Входная группа"
+        ]
+      },
+      {
+        "name": "Газоблок",
+        "price": 7920000,
+        "items": [
+          "Подготовительные работы",
+          "Фундамент монолитный",
+          "Стены из газобетона D400",
+          "Монолитные перекрытия",
+          "Стропильная кровля",
+          "Окна из профиля 70 мм",
+          "Входная группа"
+        ]
+      }
+    ],
+    "timelinePhases": [
+      { "name": "Фундамент",      "durationMonths": 2,   "color": "#0F3D2E" },
+      { "name": "Стены 1 этажа",  "durationMonths": 2,   "color": "#1a6b4e" },
+      { "name": "Стены 2 этажа",  "durationMonths": 1.5, "color": "#2d8a68" },
+      { "name": "Кровля",         "durationMonths": 1.5, "color": "#3fa07c" },
+      { "name": "Инженерия",      "durationMonths": 1.5, "color": "#52b690" },
+      { "name": "Отделка",        "durationMonths": 1.5, "color": "#68c9a3" }
+    ],
+    "constructionMonths": 10,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "active",
+    "publishedAt": "2024-04-15",
+    "updatedAt": "2025-04-01"
+  },
+  {
+    "slug": "sv-3",
+    "name": "Проект СВ-3",
+    "floors": 1,
+    "area": 190,
+    "rooms": 5,
+    "baths": 3,
+    "price": 9990000,
+    "material": "Газобетон",
+    "badge": null,
+    "promo": {
+      "text": "Цена зафиксирована до 11 апреля 2026",
+      "expiresAt": "2026-04-11"
+    },
+    "image": "/assets/images/projects/sv-3.jpg",
+    "renders": [
+      "/assets/images/projects/sv-3.jpg",
+      "/assets/images/projects/sv-3-2.jpg"
+    ],
+    "floorPlans": [
+      {
+        "label": "1 этаж",
+        "area": 190,
+        "image": "/assets/images/plans/sv-3-plan-1.jpg"
+      }
+    ],
+    "descriptionShort": "Просторный одноэтажный дом с мастер-спальней и тремя гостевыми комнатами для круглогодичного проживания.",
+    "descriptionFull": "Большой одноэтажный дом площадью 190 м² — идеальное решение для семьи, ценящей пространство на одном уровне. Мастер-спальня с собственным санузлом и гардеробом изолирована от детской зоны.\n\nГостиная-кухня 44 м² с двусторонним светом, три гостевые спальни, два санузла и просторный санузел при мастер-спальне.",
+    "komplektatsiya": [
+      {
+        "name": "Газоблок",
+        "price": 6450000,
+        "items": [
+          "Подготовительные работы",
+          "Монолитная плита",
+          "Стены из газобетона D400",
+          "Монолитный пояс",
+          "Металлочерепица",
+          "Окна ПВХ",
+          "Двери"
+        ]
+      },
+      {
+        "name": "Керамоблок",
+        "price": 6780000,
+        "items": [
+          "Подготовительные работы",
+          "Монолитная плита",
+          "Стены из керамических блоков",
+          "Монолитный пояс",
+          "Металлочерепица",
+          "Окна ПВХ",
+          "Двери"
+        ]
+      }
+    ],
+    "timelinePhases": [
+      { "name": "Фундамент",     "durationMonths": 1.5, "color": "#0F3D2E" },
+      { "name": "Стены",         "durationMonths": 2,   "color": "#1a6b4e" },
+      { "name": "Кровля",        "durationMonths": 1,   "color": "#2d8a68" },
+      { "name": "Утепление",     "durationMonths": 0.5, "color": "#3fa07c" },
+      { "name": "Инженерия",     "durationMonths": 1,   "color": "#52b690" },
+      { "name": "Фасад",         "durationMonths": 1,   "color": "#68c9a3" }
+    ],
+    "constructionMonths": 7,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "active",
+    "publishedAt": "2024-01-10",
+    "updatedAt": "2025-04-01"
+  },
+  {
+    "slug": "alfa-1",
+    "name": "Проект Альфа-1",
+    "floors": 1,
+    "area": 98,
+    "rooms": 3,
+    "baths": 1,
+    "price": 5900000,
+    "material": "Газобетон",
+    "badge": null,
+    "promo": null,
+    "image": "/assets/images/projects/alfa-1.jpg",
+    "renders": [
+      "/assets/images/projects/alfa-1.jpg"
+    ],
+    "floorPlans": [
+      {
+        "label": "1 этаж",
+        "area": 98,
+        "image": "/assets/images/plans/alfa-1-plan-1.jpg"
+      }
+    ],
+    "descriptionShort": "Компактный одноэтажный дом — идеальный вариант для молодой семьи или как загородная дача.",
+    "descriptionFull": "Оптимальное решение для небольшой семьи или использования как загородная дача. Три комнаты, просторная кухня-гостиная и удобная планировка без потерь на коридоры.\n\nКомпактный размер — минимальные сроки строительства и стоимость обслуживания.",
+    "komplektatsiya": [
+      {
+        "name": "Газоблок",
+        "price": 3200000,
+        "items": [
+          "Подготовительные работы",
+          "Фундамент",
+          "Стены из газобетона",
+          "Кровля",
+          "Окна",
+          "Двери"
+        ]
+      }
+    ],
+    "timelinePhases": [
+      { "name": "Фундамент",  "durationMonths": 1,   "color": "#0F3D2E" },
+      { "name": "Стены",      "durationMonths": 1.5, "color": "#1a6b4e" },
+      { "name": "Кровля",     "durationMonths": 0.5, "color": "#2d8a68" },
+      { "name": "Инженерия",  "durationMonths": 0.5, "color": "#3fa07c" },
+      { "name": "Фасад",      "durationMonths": 0.5, "color": "#52b690" }
+    ],
+    "constructionMonths": 5,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "active",
+    "publishedAt": "2023-12-05",
+    "updatedAt": "2025-04-01"
+  },
+  {
+    "slug": "omega-2",
+    "name": "Проект Омега-2",
+    "floors": 2,
+    "area": 178,
+    "rooms": 4,
+    "baths": 2,
+    "price": 11200000,
+    "material": "Кирпич",
+    "badge": null,
+    "promo": null,
+    "image": "/assets/images/projects/omega-2.jpg",
+    "renders": [
+      "/assets/images/projects/omega-2.jpg"
+    ],
+    "floorPlans": [
+      {
+        "label": "1 этаж",
+        "area": 96,
+        "image": "/assets/images/plans/omega-2-plan-1.jpg"
+      },
+      {
+        "label": "2 этаж",
+        "area": 82,
+        "image": "/assets/images/plans/omega-2-plan-2.jpg"
+      }
+    ],
+    "descriptionShort": "Двухэтажный дом с правильной геометрией, внутренним двориком и выразительным фасадом из кирпича.",
+    "descriptionFull": "Строгий двухэтажный дом с прямыми линиями и симметричным фасадом из облицовочного кирпича. Четыре просторные спальни, два санузла.\n\nВнутренний дворик создаёт приватную зону для отдыха, защищённую от ветра.",
+    "komplektatsiya": [
+      {
+        "name": "Кирпич",
+        "price": 7600000,
+        "items": [
+          "Подготовительные работы",
+          "Ленточный фундамент",
+          "Кладка из облицовочного кирпича",
+          "Монолитные перекрытия",
+          "Стропильная кровля",
+          "Окна",
+          "Двери"
+        ]
+      },
+      {
+        "name": "Газоблок",
+        "price": 6900000,
+        "items": [
+          "Подготовительные работы",
+          "Ленточный фундамент",
+          "Стены из газобетона",
+          "Монолитные перекрытия",
+          "Стропильная кровля",
+          "Окна",
+          "Двери"
+        ]
+      }
+    ],
+    "timelinePhases": [
+      { "name": "Фундамент",  "durationMonths": 2,   "color": "#0F3D2E" },
+      { "name": "1 этаж",     "durationMonths": 2,   "color": "#1a6b4e" },
+      { "name": "2 этаж",     "durationMonths": 1.5, "color": "#2d8a68" },
+      { "name": "Кровля",     "durationMonths": 1.5, "color": "#3fa07c" },
+      { "name": "Инженерия",  "durationMonths": 1.5, "color": "#52b690" }
+    ],
+    "constructionMonths": 9,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "active",
+    "publishedAt": "2024-02-01",
+    "updatedAt": "2025-04-01"
+  },
+  {
+    "slug": "kp-5",
+    "name": "Проект КП-5",
+    "floors": 1,
+    "area": 120,
+    "rooms": 3,
+    "baths": 2,
+    "price": 7200000,
+    "material": "Газобетон",
+    "badge": "new",
+    "promo": null,
+    "image": "/assets/images/projects/kp-5.jpg",
+    "renders": [
+      "/assets/images/projects/kp-5.jpg"
+    ],
+    "floorPlans": [
+      {
+        "label": "1 этаж",
+        "area": 120,
+        "image": "/assets/images/plans/kp-5-plan-1.jpg"
+      }
+    ],
+    "descriptionShort": "Новинка сезона — стильный одноэтажник с плоской кровлей и большими окнами в современном минималистичном стиле.",
+    "descriptionFull": "Современный одноэтажный дом с плоской эксплуатируемой кровлей и панорамным остеклением. Три спальни, две ванные, большая открытая планировка.\n\nАрхитектурная концепция — «белый куб» с акцентными деревянными вставками на фасаде. Встроенный гараж на одну машину.",
+    "komplektatsiya": [
+      {
+        "name": "Газоблок",
+        "price": 4300000,
+        "items": [
+          "Подготовительные работы",
+          "Монолитная плита",
+          "Стены из газобетона D400",
+          "Монолитный пояс",
+          "Плоская эксплуатируемая кровля",
+          "Окна панорамные",
+          "Двери"
+        ]
+      },
+      {
+        "name": "Керамоблок",
+        "price": 4650000,
+        "items": [
+          "Подготовительные работы",
+          "Монолитная плита",
+          "Стены из керамических блоков",
+          "Монолитный пояс",
+          "Плоская эксплуатируемая кровля",
+          "Окна панорамные",
+          "Двери"
+        ]
+      }
+    ],
+    "timelinePhases": [
+      { "name": "Фундамент",  "durationMonths": 1,   "color": "#0F3D2E" },
+      { "name": "Стены",      "durationMonths": 1.5, "color": "#1a6b4e" },
+      { "name": "Кровля",     "durationMonths": 1,   "color": "#2d8a68" },
+      { "name": "Инженерия",  "durationMonths": 1,   "color": "#3fa07c" },
+      { "name": "Фасад",      "durationMonths": 0.5, "color": "#52b690" }
+    ],
+    "constructionMonths": 6,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "active",
+    "publishedAt": "2024-05-15",
+    "updatedAt": "2025-04-01"
+  }
+]

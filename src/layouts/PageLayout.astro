@@ -1,0 +1,49 @@
+---
+/**
+ * PageLayout.astro
+ * Надстройка над BaseLayout для контентных страниц.
+ * Добавляет Header, Footer и общие оверлеи (modal, compare-bar, lightbox).
+ */
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import ContactModal from '@components/ui/ContactModal.astro';
+import CompareBar   from '@components/project/CompareBar.astro';
+import Lightbox     from '@components/ui/Lightbox.astro';
+
+interface Props {
+  title?:       string;
+  description?: string;
+  ogImage?:     string;
+  noIndex?:     boolean;
+  canonicalUrl?: string;
+  /** Добавить класс к <main> */
+  mainClass?:   string;
+}
+
+const { mainClass, ...layoutProps } = Astro.props;
+---
+
+<BaseLayout {...layoutProps}>
+  <slot name="head" slot="head" />
+
+  <SiteHeader />
+
+  <main id="main" class:list={['site-main', mainClass]}>
+    <slot />
+  </main>
+
+  <SiteFooter />
+
+  <!-- Глобальные оверлеи — присутствуют на всех страницах -->
+  <ContactModal />
+  <CompareBar />
+  <Lightbox />
+</BaseLayout>
+
+<style is:global>
+  .site-main {
+    /* Компенсируем высоту sticky-шапки */
+    padding-top: var(--header-h);
+  }
+</style>

@@ -1,0 +1,387 @@
+/* ══════════════════════════════════════════════
+   FORMS
+══════════════════════════════════════════════ */
+
+.form { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* Field wrapper */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.form-field--row {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+}
+.form-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-text-60);
+}
+.form-label--required::after {
+  content: '*';
+  color: var(--c-accent);
+  margin-left: 3px;
+}
+
+/* Inputs */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 0.75em 1em;
+  background: var(--c-white);
+  border: 1.5px solid var(--c-stone);
+  border-radius: var(--radius-sm);
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  color: var(--c-text);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+  outline: none;
+  appearance: none;
+}
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--c-text-30);
+}
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--c-forest);
+  box-shadow: 0 0 0 3px var(--c-forest-10);
+}
+.form-input.is-error,
+.form-textarea.is-error { border-color: var(--c-accent); }
+.form-error-msg {
+  font-size: var(--fs-xs);
+  color: var(--c-accent);
+  margin-top: -var(--space-1);
+}
+.form-textarea { resize: vertical; min-height: 120px; line-height: var(--lh-normal); }
+
+/* Number input with units */
+.form-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.form-input-wrap .form-input { padding-right: 3em; }
+.form-input-unit {
+  position: absolute;
+  right: 1em;
+  font-size: var(--fs-sm);
+  color: var(--c-text-60);
+  pointer-events: none;
+  font-weight: var(--fw-medium);
+}
+
+/* Checkbox */
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+.form-checkbox__input {
+  appearance: none;
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--c-stone);
+  border-radius: var(--radius-sm);
+  background: var(--c-white);
+  cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+  margin-top: 1px;
+}
+.form-checkbox__input:checked {
+  background: var(--c-forest);
+  border-color: var(--c-forest);
+}
+.form-checkbox__input:checked::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 5px;
+  width: 5px; height: 9px;
+  border: 2px solid var(--c-white);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.form-checkbox__input:focus { box-shadow: 0 0 0 3px var(--c-forest-10); }
+.form-checkbox__label {
+  font-size: var(--fs-sm);
+  color: var(--c-text-60);
+  line-height: 1.5;
+  cursor: pointer;
+}
+.form-checkbox__price {
+  font-weight: var(--fw-medium);
+  color: var(--c-forest);
+}
+
+/* Privacy note */
+.form-privacy {
+  font-size: var(--fs-xs);
+  color: var(--c-text-60);
+  line-height: var(--lh-loose);
+}
+.form-privacy a {
+  color: var(--c-forest);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Success state */
+.form-success {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  padding: var(--space-8);
+}
+.form-success.is-visible { display: flex; }
+.form-success__icon {
+  width: 64px; height: 64px;
+  background: var(--c-forest-10);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.form-success__icon svg { width: 30px; height: 30px; stroke: var(--c-forest); fill: none; stroke-width: 1.5; }
+.form-success__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-light);
+  color: var(--c-text);
+}
+.form-success__text { font-size: var(--fs-sm); color: var(--c-text-60); max-width: 360px; }
+
+/* ── CONTACT FORM MODAL ──────────────────────── */
+.contact-modal .modal { max-width: 520px; }
+.contact-modal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+@media (max-width: 500px) {
+  .contact-modal__grid { grid-template-columns: 1fr; }
+}
+
+/* ── DESIGN CALCULATOR ───────────────────────── */
+.design-calc {
+  background: var(--c-white);
+  border: 1px solid var(--c-stone);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.design-calc__header {
+  background: var(--c-forest);
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  text-align: center;
+}
+.design-calc__headline {
+  font-family: var(--ff-display);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-light);
+  color: var(--c-white);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin-bottom: var(--space-2);
+}
+.design-calc__sub {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.55);
+}
+.design-calc__body { padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
+
+/* Area row */
+.design-calc__area-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--c-sand);
+  border-radius: var(--radius-md);
+}
+.design-calc__area-label {
+  font-size: var(--fs-base);
+  color: var(--c-text);
+  flex: 1;
+}
+.design-calc__area-input {
+  width: 110px;
+  text-align: center;
+  font-family: var(--ff-display);
+  font-size: var(--fs-xl);
+  border-radius: var(--radius-sm);
+  background: var(--c-white);
+  border: 1.5px solid var(--c-stone);
+  padding: 0.5em 0.75em;
+  color: var(--c-text);
+  font-weight: var(--fw-light);
+  outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.design-calc__area-input:focus { border-color: var(--c-forest); box-shadow: 0 0 0 3px var(--c-forest-10); }
+.design-calc__area-unit {
+  font-size: var(--fs-base);
+  color: var(--c-text-60);
+  font-weight: var(--fw-medium);
+}
+
+/* Docs grid */
+.design-calc__docs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+.design-calc__docs-col-title {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--c-stone);
+}
+.design-calc__docs-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.design-calc__doc-item {
+  font-size: var(--fs-sm);
+  color: var(--c-text-60);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  line-height: var(--lh-loose);
+}
+.design-calc__doc-item::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--c-forest);
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+/* Pricing row */
+.design-calc__pricing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--c-stone);
+}
+.design-calc__pricing-row:last-child { border-bottom: none; }
+.design-calc__pricing-label { font-size: var(--fs-sm); color: var(--c-text-60); }
+.design-calc__pricing-value {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+}
+
+/* Total row */
+.design-calc__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5);
+  background: var(--c-sand);
+  border-radius: var(--radius-md);
+}
+.design-calc__total-label {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+}
+.design-calc__total-value {
+  font-family: var(--ff-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-light);
+  color: var(--c-forest);
+  letter-spacing: var(--ls-tight);
+}
+.design-calc__footer {
+  padding: var(--space-6) var(--space-8);
+  border-top: 1px solid var(--c-stone);
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* ── MORTGAGE SECTION ────────────────────────── */
+.mortgage-section {
+  background: var(--c-sand);
+  border-radius: var(--radius-md);
+  padding: var(--space-8);
+}
+.mortgage-section__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--ls-tight);
+  color: var(--c-text);
+  margin-bottom: var(--space-6);
+}
+.mortgage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+.mortgage-result {
+  background: var(--c-white);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.mortgage-result__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--c-stone);
+}
+.mortgage-result__item:last-child { border-bottom: none; }
+.mortgage-result__label { font-size: var(--fs-sm); color: var(--c-text-60); }
+.mortgage-result__value {
+  font-family: var(--ff-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-light);
+  color: var(--c-text);
+}
+.mortgage-result__value--highlight { color: var(--c-forest); font-size: var(--fs-2xl); }
+.mortgage-disclaimer {
+  font-size: var(--fs-xs);
+  color: var(--c-text-60);
+  line-height: var(--lh-loose);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .design-calc__docs-grid { grid-template-columns: 1fr; }
+  .design-calc__body { padding: var(--space-5); }
+  .design-calc__header { padding: var(--space-6); }
+  .design-calc__headline { font-size: var(--fs-2xl); }
+  .mortgage-grid { grid-template-columns: 1fr; }
+  .mortgage-result__value--highlight { font-size: var(--fs-xl); }
+}
+@media (max-width: 520px) {
+  .design-calc__area-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .design-calc__area-input { width: 100%; }
+  .design-calc__total { flex-direction: column; gap: var(--space-2); }
+  .design-calc__total-value { font-size: var(--fs-xl); }
+  .design-calc__footer { flex-direction: column; }
+  .design-calc__footer .btn { width: 100%; justify-content: center; }
+  .contact-modal__grid { grid-template-columns: 1fr; }
+}

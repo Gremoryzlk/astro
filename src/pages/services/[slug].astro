@@ -1,0 +1,231 @@
+---
+/**
+ * pages/services/[slug].astro
+ * Страницы услуг (кроме /services/design/ — у неё отдельный файл с калькулятором).
+ * Данные хранятся прямо здесь — услуг немного, CMS не нужна.
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+
+export function getStaticPaths() {
+  // 'design' has its own page at services/design/index.astro
+  return SERVICES.filter(s => s.slug !== 'design').map(s => ({ params: { slug: s.slug } }));
+}
+
+interface Service {
+  slug:        string;
+  title:       string;
+  description: string;
+  intro:       string;
+  stages:      { num: string; title: string; text: string }[];
+  materials?:  { name: string; desc: string }[];
+  faq:         { q: string; a: string }[];
+}
+
+const SERVICES: Service[] = [
+  {
+    slug:  'foundation',
+    title: 'Фундамент под ключ',
+    description: 'Строительство фундаментов любого типа в Ленинградской области. Монолитная плита, ленточный, свайно-ростверковый.',
+    intro: 'Фундамент — основа вашего дома. Мы проектируем и строим фундаменты под конкретные грунтовые условия вашего участка в Ленинградской области, где торфяники и высокий уровень грунтовых вод требуют особого подхода.',
+    stages: [
+      { num: '1', title: 'Геология участка', text: 'Анализируем тип грунта, УГВ, несущую способность — без этого правильно рассчитать фундамент невозможно.' },
+      { num: '2', title: 'Проект фундамента', text: 'Подбираем оптимальный тип фундамента, рассчитываем армирование и марку бетона.' },
+      { num: '3', title: 'Земляные работы', text: 'Разработка котлована или траншей, устройство дренажа и песчаной подготовки.' },
+      { num: '4', title: 'Бетонирование', text: 'Монтаж опалубки, армирование, заливка бетоном М300–М400, уход за бетоном.' },
+      { num: '5', title: 'Гидроизоляция', text: 'Обмазочная и рулонная гидроизоляция, утепление периметра пеноплексом.' },
+    ],
+    materials: [
+      { name: 'Монолитная плита',        desc: 'Оптимальна для слабых грунтов и торфяников. Равномерно распределяет нагрузку.' },
+      { name: 'Ленточный монолитный',    desc: 'Для плотных грунтов. Подходит для домов с подвалом или цокольным этажом.' },
+      { name: 'Свайно-ростверковый',     desc: 'При высоком УГВ или сложном рельефе. Сваи уходят ниже уровня промерзания.' },
+    ],
+    faq: [
+      { q: 'Сколько времени нужно для набора прочности?', a: 'Бетон набирает 70% прочности за 7 дней, 100% — за 28 дней. Нагружать фундамент раньше этого срока нельзя.' },
+      { q: 'Нужна ли геология участка?', a: 'Настоятельно рекомендуем. Без геологии фундамент рассчитывается с большим запасом, что удорожает строительство. Геология экономит деньги.' },
+    ],
+  },
+  {
+    slug:  'roofing',
+    title: 'Монтаж кровли',
+    description: 'Монтаж кровли любого типа: металлочерепица, ПВХ-мембрана, гибкая черепица. Скатные и плоские кровли.',
+    intro: 'Кровля защищает дом от осадков и сохраняет тепло. Мы монтируем скатные и плоские кровли под ключ — от стропильной системы до финального кровельного покрытия.',
+    stages: [
+      { num: '1', title: 'Стропильная система', text: 'Расчёт и монтаж стропил из сухой строганой доски. Антисептическая обработка.' },
+      { num: '2', title: 'Тепло- и гидроизоляция', text: 'Укладка паро- и гидробарьера, минеральной ваты или пенополиуретана.' },
+      { num: '3', title: 'Обрешётка и контробрешётка', text: 'Монтаж вентиляционного зазора для отвода конденсата.' },
+      { num: '4', title: 'Кровельное покрытие', text: 'Укладка металлочерепицы, ПВХ-мембраны или гибкой черепицы.' },
+      { num: '5', title: 'Водосточная система', text: 'Монтаж желобов, труб, снегозадержателей. Заземление.' },
+    ],
+    materials: [
+      { name: 'Металлочерепица',  desc: 'Экономичный и долговечный вариант. Срок службы 30–50 лет.' },
+      { name: 'ПВХ-мембрана',     desc: 'Для плоских кровель. Полная герметичность, срок службы 25+ лет.' },
+      { name: 'Гибкая черепица',  desc: 'Для скатных кровель любой конфигурации. Тихая, эстетичная.' },
+    ],
+    faq: [
+      { q: 'Можно ли монтировать кровлю зимой?', a: 'Металлочерепицу — да. ПВХ-мембрану — при температуре выше -10°C. Гибкую черепицу — только при +5°C и выше.' },
+      { q: 'Какой уклон кровли выбрать?', a: 'Для металлочерепицы — от 14°, для мембраны — от 2°, для гибкой черепицы — от 12°.' },
+    ],
+  },
+  {
+    slug:  'engineering',
+    title: 'Инженерные сети',
+    description: 'Проектирование и монтаж инженерных систем: электрика, водоснабжение, канализация, отопление, вентиляция.',
+    intro: 'Инженерные системы — это комфорт и безопасность вашего дома. Мы проектируем и монтируем все инженерные сети под ключ в соответствии с нормами ПУЭ, СНиП и СП.',
+    stages: [
+      { num: '1', title: 'Проект инженерных сетей', text: 'Разрабатываем схемы всех инженерных систем, согласовываем с заказчиком.' },
+      { num: '2', title: 'Закладные и штробление', text: 'До заливки стяжки укладываем трубы водоснабжения, канализации, кабели электрики.' },
+      { num: '3', title: 'Монтаж оборудования', text: 'Котёл, бойлер, насосная станция, щит автоматики, радиаторы.' },
+      { num: '4', title: 'Разводка по помещениям', text: 'Финальная разводка труб и кабелей, установка розеток, выключателей, сантехники.' },
+      { num: '5', title: 'Пуско-наладка и проверка', text: 'Опрессовка систем водоснабжения, проверка электрики, балансировка отопления.' },
+    ],
+    materials: [
+      { name: 'Электрика 220/380В',       desc: 'Щит автоматики, УЗО, разводка кабелем ВВГнг по скрытой и открытой схеме.' },
+      { name: 'Водоснабжение и канализация', desc: 'Трубы Rehau или Valtek, канализация ПП. Тихая и долговечная система.' },
+      { name: 'Отопление и тёплый пол',   desc: 'Газовый или электрический котёл, радиаторы, водяной тёплый пол.' },
+    ],
+    faq: [
+      { q: 'Нужен ли отдельный проект инженерных сетей?', a: 'Для газа — обязательно. Для остального — желательно: это экономит материалы и позволяет всё предусмотреть заранее.' },
+      { q: 'Можно ли совместить тёплый пол с радиаторами?', a: 'Да, это классическая двухконтурная система. Тёплый пол — основной обогрев, радиаторы — дополнительный у окон.' },
+    ],
+  },
+  {
+    slug:  'finishing',
+    title: 'Отделка под ключ',
+    description: 'Черновая и чистовая отделка загородного дома. Сдаём дом полностью готовым к заселению.',
+    intro: 'Мы берёмся за отделку домов, которые строили сами, и сторонних объектов. Работаем по утверждённому дизайн-проекту или по вашим эскизам.',
+    stages: [
+      { num: '1', title: 'Черновая отделка', text: 'Стяжка пола, штукатурка стен, монтаж перегородок из газоблока или ГКЛ.' },
+      { num: '2', title: 'Инженерка и разводка', text: 'Финальная разводка электрики, водоснабжения, тёплого пола.' },
+      { num: '3', title: 'Чистовые полы', text: 'Укладка плитки, ламината, паркета, LVT-плитки.' },
+      { num: '4', title: 'Отделка стен и потолков', text: 'Покраска, поклейка обоев, монтаж натяжных потолков или гипсокартона.' },
+      { num: '5', title: 'Финал', text: 'Установка дверей, сантехники, розеток, осветительных приборов. Уборка.' },
+    ],
+    faq: [
+      { q: 'Сколько длится чистовая отделка?', a: 'Для дома 150–200 м² — 3–5 месяцев, в зависимости от сложности дизайна и количества бригад.' },
+      { q: 'Вы работаете с чужими проектами?', a: 'Да. Предоставьте дизайн-проект или хотя бы ТЗ — мы рассчитаем стоимость и сроки.' },
+    ],
+  },
+];
+
+const { slug } = Astro.params;
+const service = SERVICES.find(s => s.slug === slug);
+if (!service) return Astro.redirect('/services/');
+---
+
+<PageLayout title={service.title} description={service.description}>
+
+  <div class="service-hero">
+    <div class="container">
+      <nav class="breadcrumb" style="margin-bottom:var(--space-6)" aria-label="Навигация">
+        <span class="breadcrumb__item"><a href="/" style="color:rgba(255,255,255,.5)">Главная</a></span>
+        <span class="breadcrumb__sep" style="color:rgba(255,255,255,.3)" aria-hidden="true">›</span>
+        <span class="breadcrumb__item"><a href="/services/" style="color:rgba(255,255,255,.5)">Услуги</a></span>
+        <span class="breadcrumb__sep" style="color:rgba(255,255,255,.3)" aria-hidden="true">›</span>
+        <span class="breadcrumb__item" style="color:rgba(255,255,255,.7)">{service.title}</span>
+      </nav>
+      <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:var(--space-3)">Услуга</p>
+      <h1 class="service-hero__title">{service.title}</h1>
+      <p class="service-hero__text">{service.intro}</p>
+    </div>
+  </div>
+
+  <div class="service-content">
+    <div class="container">
+      <div class="service-content__grid">
+
+        <div class="service-content__body">
+
+          <!-- Этапы работ -->
+          <div data-reveal>
+            <h2 class="service-content__section-title">Этапы работ</h2>
+            <div class="service-stages">
+              {service.stages.map(s => (
+                <div class="service-stage">
+                  <div class="service-stage__num">{s.num}</div>
+                  <div class="service-stage__content">
+                    <div class="service-stage__title">{s.title}</div>
+                    <p class="service-stage__text">{s.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Материалы / технологии -->
+          {service.materials && (
+            <div data-reveal>
+              <h2 class="service-content__section-title">Что используем</h2>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space-4)">
+                {service.materials.map(mat => (
+                  <div style="background:var(--c-sand);border-radius:var(--radius-md);padding:var(--space-5)">
+                    <h3 style="font-size:var(--fs-base);font-weight:500;color:var(--c-text);margin-bottom:var(--space-2)">{mat.name}</h3>
+                    <p style="font-size:var(--fs-sm);color:var(--c-text-60);line-height:var(--lh-loose)">{mat.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- FAQ -->
+          <div data-reveal>
+            <h2 class="service-content__section-title">Частые вопросы</h2>
+            <div style="display:flex;flex-direction:column;gap:var(--space-2)" data-accordion>
+              {service.faq.map(item => (
+                <div class="expandable">
+                  <div class="expandable__trigger" role="button" tabindex="0" aria-expanded="false">
+                    <span class="expandable__trigger-title">{item.q}</span>
+                    <div class="expandable__trigger-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                        <path d="M12 5v14M5 12h14"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="expandable__body">
+                    <div class="expandable__content">{item.a}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Сайдбар -->
+        <aside class="sticky-sidebar">
+          <div class="sidebar-cta-card">
+            <h3 class="sidebar-cta-card__title">Получить коммерческое предложение</h3>
+            <p class="sidebar-cta-card__text">Оставьте заявку — рассчитаем стоимость и сроки под ваш объект.</p>
+            <button class="btn btn--accent btn--block" data-modal-open="contactModal" type="button">Оставить заявку</button>
+          </div>
+
+          <div style="background:var(--c-sand);border-radius:var(--radius-md);padding:var(--space-5)">
+            <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-text-60);margin-bottom:var(--space-4)">
+              Другие услуги
+            </p>
+            <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+              {[
+                { slug: 'design',      title: 'Проектирование'    },
+                { slug: 'foundation',  title: 'Фундамент'         },
+                { slug: 'roofing',     title: 'Монтаж кровли'     },
+                { slug: 'engineering', title: 'Инженерные сети'   },
+                { slug: 'finishing',   title: 'Отделка под ключ'  },
+              ].filter(s => s.slug !== slug).map(s => (
+                <a
+                  href={`/services/${s.slug}/`}
+                  style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-3);background:var(--c-white);border-radius:var(--radius-sm);font-size:var(--fs-sm);color:var(--c-text);transition:background var(--dur-fast)"
+                  onmouseover="this.style.background='var(--c-forest-10)'"
+                  onmouseout="this.style.background='var(--c-white)'"
+                >
+                  {s.title}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+</PageLayout>

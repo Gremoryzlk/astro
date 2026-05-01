@@ -1,0 +1,505 @@
+---
+/**
+ * pages/projects/[slug].astro — Страница проекта
+ *
+ * Генерирует статичную страницу для каждого slug из projects.json.
+ * Добавить проект = добавить запись в JSON. Эта страница не меняется.
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+import ProjectCard from '@components/project/ProjectCard.astro';
+import { getAllProjectSlugs, getProjectBySlug, getSimilarProjects } from '@lib/getProjects';
+import { getPortfolioByProjectSlug } from '@lib/getPortfolio';
+import { formatPrice, isPromoActive } from '@lib/types';
+import site from '@data/site.json';
+
+export async function getStaticPaths() {
+  const slugs = await getAllProjectSlugs();
+  return slugs.map(slug => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const project = await getProjectBySlug(slug!);
+
+if (!project) {
+  return Astro.redirect('/404/');
+}
+
+const similar   = await getSimilarProjects(project);
+const builtWith = await getPortfolioByProjectSlug(project.slug);
+const promoActive = isPromoActive(project.promo);
+
+// Суммарная продолжительность для нормализации ширин в таймлайне
+const totalDuration = project.timelinePhases.reduce((s, p) => s + p.durationMonths, 0);
+---
+
+<PageLayout
+  title={project.seoTitle ?? project.name}
+  description={project.seoDescription ?? project.descriptionShort}
+>
+
+  <div class="project-detail">
+
+    <!-- Хлебные крошки -->
+    <div class="project-detail__breadcrumb" style="padding-top:calc(var(--header-h) + var(--space-4))">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Навигация">
+          <span class="breadcrumb__item"><a href="/">Главная</a></span>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__item"><a href="/projects/">Проекты домов</a></span>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">{project.name}</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- ─── HERO: слайдер + панель характеристик ────── -->
+    <div class="container">
+      <div class="project-hero">
+
+        <!-- Слайдер рендеров -->
+        <div>
+          <div class="project-slider" id="projectSlider" aria-label="Рендеры проекта">
+            <div class="project-slider__track" id="sliderTrack">
+              {project.renders.map((src, i) => (
+                <div class="project-slider__slide">
+                  <img
+                    src={src}
+                    alt={`${project.name} — рендер ${i + 1}`}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    width="960"
+                    height="600"
+                  />
+                </div>
+              ))}
+              {/* Placeholder если рендеры не загружены */}
+              {project.renders.length === 0 && (
+                <div class="project-slider__slide">
+                  <div class="project-slider__slide-placeholder">{project.name}</div>
+                </div>
+              )}
+            </div>
+
+            {project.renders.length > 1 && (
+              <>
+                <button class="project-slider__prev" aria-label="Предыдущий рендер" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="project-slider__next" aria-label="Следующий рендер" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <div class="project-slider__dots" role="tablist" aria-label="Слайды">
+                  {project.renders.map((_, i) => (
+                    <button
+                      class:list={['project-slider__dot', { 'is-active': i === 0 }]}
+                      role="tab"
+                      aria-label={`Слайд ${i + 1}`}
+                      type="button"
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+
+            <button class="project-slider__expand" aria-label="Открыть в полный экран" type="button"
+              data-lightbox-open
+              data-lightbox-sources={JSON.stringify(project.renders)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Панель характеристик -->
+        <aside class="specs-panel" aria-label="Характеристики проекта">
+          <div class="specs-panel__header">
+            <h1 class="specs-panel__name">{project.name}</h1>
+            <div class="specs-panel__badges">
+              <span class="badge badge--floors">
+                {project.floors} {project.floors === 1 ? 'этаж' : 'этажа'}
+              </span>
+              {project.badge === 'new' && <span class="badge badge--new">⚡ Новый</span>}
+            </div>
+          </div>
+
+          <div class="specs-panel__body">
+            <!-- Площадь -->
+            <div class="specs-panel__area">
+              <div class="specs-panel__area-label">
+                Площадь по осям
+                <a href="/info/area/" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--c-stone);font-size:10px;color:var(--c-text-60);font-style:italic" title="Что такое площадь по осям?">?</a>
+              </div>
+              <div class="specs-panel__area-value">
+                {project.area}<span class="specs-panel__area-unit"> м²</span>
+              </div>
+            </div>
+
+            <!-- Комнаты и санузлы -->
+            <div class="specs-panel__rooms">
+              <div class="specs-panel__room-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22" aria-hidden="true">
+                  <path d="M3 7h18M3 12h18M3 17h18"/>
+                </svg>
+                <div>
+                  <div class="specs-panel__room-num">{project.rooms}</div>
+                  <div class="specs-panel__room-label">Комнаты</div>
+                </div>
+              </div>
+              <div class="specs-panel__room-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22" aria-hidden="true">
+                  <path d="M4 12h16M4 6h7M4 18h16"/>
+                </svg>
+                <div>
+                  <div class="specs-panel__room-num">{project.baths}</div>
+                  <div class="specs-panel__room-label">Санузла</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Характеристики -->
+            <div>
+              <div class="spec-row">
+                <span class="spec-row__label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                  Этажность
+                </span>
+                <span class="spec-row__value">{project.floors} эт.</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-row__label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  Материал стен
+                </span>
+                <span class="spec-row__value">
+                  <a href="/info/materials/" class="spec-row__link">{project.material} ↗</a>
+                </span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-row__label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Срок строительства
+                </span>
+                <span class="spec-row__value">{project.constructionMonths} мес.</span>
+              </div>
+            </div>
+
+            <!-- Цена -->
+            <div class="specs-panel__price-block">
+              <div class="specs-panel__price">{formatPrice(project.price)}</div>
+              {promoActive && project.promo && (
+                <>
+                  <span class="specs-panel__promo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" aria-hidden="true">
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    АКЦИЯ
+                  </span>
+                  <p class="specs-panel__promo-text">{project.promo.text}</p>
+                </>
+              )}
+            </div>
+          </div>
+
+          <!-- Кнопки действий -->
+          <div class="specs-panel__actions">
+            {site.socials.telegram && (
+              <a href={site.socials.telegram} class="btn btn--primary btn--block" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                Получить в Telegram
+              </a>
+            )}
+            <button class="btn btn--outline btn--block" data-modal-open="contactModal" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Получить на почту
+            </button>
+          </div>
+
+          <!-- Сравнение -->
+          <div class="specs-panel__compare" role="button" tabindex="0"
+            data-compare-id={project.slug}
+            data-compare-name={project.name}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
+              <rect x="3" y="3" width="4" height="18"/>
+              <rect x="10" y="8" width="4" height="13"/>
+              <rect x="17" y="5" width="4" height="16"/>
+            </svg>
+            Сравнить с другими проектами
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ─── ANCHOR NAV ──────────────────────────────── -->
+    <div class="anchor-nav" id="anchorNav" role="navigation" aria-label="Разделы проекта">
+      <div class="container">
+        <div class="anchor-nav__inner">
+          <button class="anchor-nav__btn is-active" data-target="section-plans"   type="button">Планировка</button>
+          <button class="anchor-nav__btn"           data-target="section-komplekt" type="button">Комплектация</button>
+          <button class="anchor-nav__btn"           data-target="section-timeline" type="button">График строительства</button>
+          <button class="anchor-nav__btn"           data-target="section-mortgage" type="button">Ипотека</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- ─── ПЛАНИРОВКА ───────────────────────────── -->
+      <section class="project-section" id="section-plans" aria-labelledby="plansTitle">
+        <h2 class="project-section__title" id="plansTitle">Планировка</h2>
+        <div class="floor-plans__grid">
+          <div class="floor-plan-images">
+            {project.floorPlans.map((plan, i) => (
+              <div
+                class="floor-plan-image"
+                data-lightbox="plans"
+                data-src={plan.image}
+                role="button"
+                tabindex="0"
+                aria-label={`Увеличить планировку: ${plan.label}`}
+              >
+                <img
+                  src={plan.image}
+                  alt={`Планировка ${plan.label} — ${project.name}`}
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="480"
+                />
+                <div class="floor-plan-image__label">{plan.label} · {plan.area} м²</div>
+                <div class="floor-plan-image__zoom" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="plan-side-panel">
+            <div class="plan-side-panel__title">Варианты планировочных решений</div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+              <a href="/services/design/#calculator" class="btn btn--primary btn--sm btn--block">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Создать свой проект
+              </a>
+              <button class="btn btn--outline btn--sm btn--block" onclick="window.print()" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Распечатать планировку
+              </button>
+            </div>
+            <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--c-stone)">
+              <p style="font-size:var(--fs-xs);color:var(--c-text-60);line-height:var(--lh-loose)">
+                Проект предусматривает возможность строительства из
+                <a href="/info/materials/" style="color:var(--c-forest);text-decoration:underline">
+                  газобетона, кирпича, керамических блоков
+                </a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── КОМПЛЕКТАЦИЯ ─────────────────────────── -->
+      <section class="project-section" id="section-komplekt" aria-labelledby="komplektTitle">
+        <h2 class="project-section__title" id="komplektTitle">Комплектация</h2>
+
+        <div class="komplektatsiya" data-tabs>
+          <div class="komplektatsiya__tabs" role="tablist" aria-label="Варианты комплектации">
+            {project.komplektatsiya.map((variant, i) => (
+              <div
+                class:list={['komplektatsiya__tab', { 'is-active': i === 0 }]}
+                data-tab
+                role="tab"
+                tabindex={i === 0 ? 0 : -1}
+                aria-selected={i === 0}
+              >
+                <span class="komplektatsiya__tab-name">{variant.name}</span>
+                <span class="komplektatsiya__tab-price">
+                  {(variant.price / 1_000_000).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} млн ₽
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {project.komplektatsiya.map((variant, i) => (
+            <div class="komplektatsiya__body" data-tab-panel hidden={i !== 0}>
+              <p class="komplektatsiya__include-title">Входит в стоимость:</p>
+              <div class="komplektatsiya__items">
+                {variant.items.map(item => (
+                  <div class="komplektatsiya__item">
+                    <div class="komplektatsiya__item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
+                    <span class="komplektatsiya__item-name">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ─── ГРАФИК СТРОИТЕЛЬСТВА ─────────────────── -->
+      <section class="project-section" id="section-timeline" aria-labelledby="timelineTitle">
+        <h2 class="project-section__title" id="timelineTitle">График строительства</h2>
+
+        <div class="timeline">
+          <div class="timeline__track">
+            <div class="timeline__label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+              </svg>
+              <br />Капитальная конструкция
+            </div>
+            <div class="timeline__bar" aria-label={`График строительства: ${project.constructionMonths} месяцев`}>
+              <div class="timeline__phases">
+                {project.timelinePhases.map(phase => (
+                  <div
+                    class="timeline__phase"
+                    style={`background:${phase.color};flex:${phase.durationMonths / totalDuration * 10}`}
+                    title={`${phase.name}: ${phase.durationMonths} мес.`}
+                    role="img"
+                    aria-label={`${phase.name}: ${phase.durationMonths} месяцев`}
+                  >
+                    {phase.name}
+                  </div>
+                ))}
+              </div>
+              <div class="timeline__months" aria-hidden="true">
+                {Array.from({ length: project.constructionMonths }, (_, i) => (
+                  <div class="timeline__month">{i + 1} мес</div>
+                ))}
+              </div>
+            </div>
+            <div class="timeline__label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20" aria-hidden="true">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              </svg>
+              <br />Сдача объекта.
+              <br /><small style="color:rgba(255,255,255,.6);font-size:10px">Чётко в срок.</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── ИПОТЕКА ───────────────────────────────── -->
+      <section class="project-section" id="section-mortgage" aria-labelledby="mortgageTitle">
+        <h2 class="project-section__title" id="mortgageTitle">Ипотека</h2>
+        <div
+          class="mortgage-section"
+          id="mortgageCalc"
+          data-default-price={(project.price / 1_000_000).toFixed(2)}
+        >
+          <div class="mortgage-grid">
+            <div class="form" style="gap:var(--space-5)">
+              <div class="form-field">
+                <label class="form-label" for="mortgagePrice">Стоимость дома, млн ₽</label>
+                <div class="form-input-wrap">
+                  <input class="form-input" type="number" id="mortgagePrice"
+                    value={(project.price / 1_000_000).toFixed(2)}
+                    min="1" max="100" step="0.1" />
+                  <span class="form-input-unit">млн</span>
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="mortgageDown">
+                  Первоначальный взнос, млн ₽
+                  <span id="mortgageDownPct" style="color:var(--c-forest);font-weight:500">20%</span>
+                </label>
+                <div class="form-input-wrap">
+                  <input class="form-input" type="number" id="mortgageDown"
+                    value={(project.price / 1_000_000 * 0.2).toFixed(2)}
+                    min="0" step="0.1" />
+                  <span class="form-input-unit">млн</span>
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="mortgageRate">Ставка, % годовых</label>
+                <input class="form-input" type="number" id="mortgageRate" value="8.5" min="1" max="30" step="0.1" />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="mortgageTerm">Срок, лет</label>
+                <input class="form-input" type="number" id="mortgageTerm" value="20" min="1" max="30" />
+              </div>
+              <button class="btn btn--accent btn--block" data-modal-open="contactModal" type="button">
+                Оставить заявку на ипотеку
+              </button>
+              <p class="mortgage-disclaimer">* Расчёт ориентировочный. Точные условия уточняйте у менеджера.</p>
+            </div>
+            <div class="mortgage-result">
+              <div style="padding:var(--space-4);background:var(--c-forest);border-radius:var(--radius-sm);margin-bottom:var(--space-4)">
+                <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px">Ежемесячный платёж</p>
+                <p id="mortgageMonthly" style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;color:var(--c-white);letter-spacing:-0.02em;line-height:1">—</p>
+              </div>
+              <div class="mortgage-result__item">
+                <span class="mortgage-result__label">Сумма кредита</span>
+                <span class="mortgage-result__value" id="mortgageLoan">—</span>
+              </div>
+              <div class="mortgage-result__item">
+                <span class="mortgage-result__label">Общая сумма выплат</span>
+                <span class="mortgage-result__value" id="mortgageTotalPay">—</span>
+              </div>
+              <div class="mortgage-result__item">
+                <span class="mortgage-result__label">Переплата</span>
+                <span class="mortgage-result__value" id="mortgageOverpay">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /container -->
+
+    <!-- ─── ПОСТРОЕННЫЕ ОБЪЕКТЫ ────────────────────── -->
+    {builtWith.length > 0 && (
+      <section style="background:var(--c-sand);padding-block:var(--section-gap)" aria-labelledby="builtTitle">
+        <div class="container">
+          <div class="section-header" data-reveal>
+            <span class="section-header__eyebrow">Уже построено</span>
+            <h2 class="section-header__title" id="builtTitle">Дома по этому проекту</h2>
+          </div>
+          <div class="projects-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+            {builtWith.map(obj => (
+              <a href={`/portfolio/${obj.slug}/`} class="project-card" style="text-decoration:none">
+                <div class="project-card__image-wrap" style="aspect-ratio:16/9">
+                  <img src={obj.heroImage} alt={obj.name} loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover" />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__name">{obj.name}</h3>
+                  <div class="project-card__meta">
+                    <span class="project-card__meta-item">{obj.area} м²</span>
+                    <span class="project-card__meta-item">{obj.walls}</span>
+                    <span class="project-card__meta-item">{obj.constructionDays} дней</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- ─── ПОХОЖИЕ ПРОЕКТЫ ───────────────────────── -->
+    {similar.length > 0 && (
+      <section class="similar-projects" aria-labelledby="similarTitle">
+        <div class="container">
+          <div class="section-header" data-reveal>
+            <span class="section-header__eyebrow">Смотрите также</span>
+            <h2 class="section-header__title" id="similarTitle">Похожие проекты</h2>
+          </div>
+          <div class="projects-grid">
+            {similar.map((p, i) => <ProjectCard project={p} index={i} />)}
+          </div>
+        </div>
+      </section>
+    )}
+
+  </div><!-- /project-detail -->
+</PageLayout>
+
+<script>
+  import '@scripts/slider.ts';
+  import '@scripts/compare.ts';
+  import '@scripts/calculators.ts';
+</script>

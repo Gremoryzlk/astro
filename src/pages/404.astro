@@ -1,0 +1,27 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+---
+
+<PageLayout title="Страница не найдена" noIndex={true}>
+  <div style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding:var(--space-16) var(--gutter)">
+    <div style="text-align:center;max-width:480px">
+      <div
+        style="font-family:var(--ff-display);font-size:clamp(5rem,15vw,10rem);font-weight:300;color:var(--c-stone);line-height:1;letter-spacing:-0.04em;margin-bottom:var(--space-6)"
+        aria-hidden="true"
+      >
+        404
+      </div>
+      <h1 style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;letter-spacing:-0.02em;color:var(--c-text);margin-bottom:var(--space-4)">
+        Страница не найдена
+      </h1>
+      <p style="font-size:var(--fs-base);color:var(--c-text-60);line-height:1.8;margin-bottom:var(--space-8)">
+        Возможно, страница была перемещена или удалена. Воспользуйтесь навигацией
+        или вернитесь на главную.
+      </p>
+      <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap">
+        <a href="/" class="btn btn--primary btn--lg">На главную</a>
+        <a href="/projects/" class="btn btn--outline btn--lg">Смотреть проекты</a>
+      </div>
+    </div>
+  </div>
+</PageLayout>

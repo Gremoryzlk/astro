@@ -1,0 +1,35 @@
+---
+/**
+ * Lightbox.astro
+ * Оверлей для просмотра изображений в полный экран.
+ * Открывается через window.openLightbox(sources, startIndex) из scripts/core.ts
+ */
+---
+
+<div
+  class="lightbox"
+  id="lightbox"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Просмотр изображения"
+>
+  <div class="lightbox__inner">
+    <img class="lightbox__image" src="" alt="Просмотр" id="lightboxImg" />
+    <button class="lightbox__prev" aria-label="Предыдущее изображение" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <button class="lightbox__next" aria-label="Следующее изображение" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+    <button class="lightbox__close" aria-label="Закрыть" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="lightbox__counter" id="lightboxCounter" aria-live="polite"></div>
+  </div>
+</div>

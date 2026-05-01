@@ -1,0 +1,126 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+
+const MATERIALS = [
+  {
+    name: 'Газобетон',
+    popular: true,
+    pros: ['Отличное теплосбережение', 'Быстрый монтаж', 'Лёгкий материал — меньше нагрузка на фундамент', 'Хорошая звукоизоляция', 'Доступная цена'],
+    cons: ['Требует внешней отделки или штукатурки', 'Гигроскопичен — важна гидроизоляция'],
+    priceNote: 'Базовая',
+    color: '#0F3D2E',
+  },
+  {
+    name: 'Кирпич',
+    popular: false,
+    pros: ['Максимальная долговечность (100+ лет)', 'Эстетичный внешний вид без отделки', 'Высокая прочность и морозостойкость', 'Большая тепловая инерция — прохлада летом'],
+    cons: ['Более высокая стоимость', 'Медленный монтаж', 'Тяжелее — нужен более мощный фундамент'],
+    priceNote: '+8–12% к базовой',
+    color: '#8B5E3C',
+  },
+  {
+    name: 'Керамический блок',
+    popular: false,
+    pros: ['Лучшее теплосбережение из трёх', 'Монтируется быстрее кирпича', 'Экологичный природный материал', 'Меньше мостиков холода'],
+    cons: ['Высокая цена', 'Хрупкость при монтаже — нужны опытные каменщики'],
+    priceNote: '+3–6% к базовой',
+    color: '#A0522D',
+  },
+] as const;
+---
+
+<PageLayout
+  title="Материалы стен: газобетон, кирпич, керамоблок"
+  description="Сравнение материалов для строительства стен. Плюсы, минусы, стоимость каждого варианта."
+>
+
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Полезная информация</p>
+      <h1 class="page-header__title">Из чего строить дом?<br/>Сравнение материалов</h1>
+    </div>
+  </div>
+
+  <section style="padding-block:var(--section-gap)">
+    <div class="container container--narrow">
+
+      <nav class="breadcrumb" style="margin-bottom:var(--space-8)" aria-label="Навигация">
+        <span class="breadcrumb__item"><a href="/">Главная</a></span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item"><a href="/projects/">Проекты</a></span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Материалы стен</span>
+      </nav>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-10)">
+
+        <p style="font-size:var(--fs-lg);color:var(--c-text-60);line-height:var(--lh-loose);border-left:3px solid var(--c-forest);padding-left:var(--space-5)" data-reveal>
+          Каждый из трёх материалов подходит для Ленинградского климата.
+          Выбор зависит от бюджета, сроков и ваших приоритетов.
+        </p>
+
+        <!-- Карточки материалов -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-5)" data-reveal>
+          {MATERIALS.map(mat => (
+            <div style="background:var(--c-white);border:1px solid var(--c-stone);border-radius:var(--radius-md);overflow:hidden">
+              <div style={`background:${mat.color};padding:var(--space-5) var(--space-6);display:flex;justify-content:space-between;align-items:center`}>
+                <h2 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;color:var(--c-white)">{mat.name}</h2>
+                {mat.popular && (
+                  <span style="background:rgba(255,255,255,.15);color:var(--c-white);font-size:var(--fs-sm);font-weight:500;padding:4px 14px;border-radius:var(--radius-pill)">
+                    Популярный выбор
+                  </span>
+                )}
+              </div>
+              <div style="padding:var(--space-6);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6)">
+                <div>
+                  <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-forest);margin-bottom:var(--space-4)">Преимущества</p>
+                  <ul style="display:flex;flex-direction:column;gap:var(--space-2)">
+                    {mat.pros.map(p => (
+                      <li style="display:flex;gap:var(--space-2);font-size:var(--fs-sm);color:var(--c-text-60)">
+                        <span style="color:var(--c-forest);flex-shrink:0">✓</span>
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-accent);margin-bottom:var(--space-4)">Нюансы</p>
+                  <ul style="display:flex;flex-direction:column;gap:var(--space-2)">
+                    {mat.cons.map(c => (
+                      <li style="display:flex;gap:var(--space-2);font-size:var(--fs-sm);color:var(--c-text-60)">
+                        <span style="color:var(--c-accent);flex-shrink:0">—</span>
+                        {c}
+                      </li>
+                    ))}
+                  </ul>
+                  <div style="margin-top:var(--space-5);padding:var(--space-4);background:var(--c-sand);border-radius:var(--radius-sm)">
+                    <p style="font-size:var(--fs-xs);color:var(--c-text-60)">Надбавка к цене</p>
+                    <p style="font-family:var(--ff-display);font-size:var(--fs-xl);font-weight:300;color:var(--c-text)">{mat.priceNote}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align:center" data-reveal>
+          <p style="font-size:var(--fs-base);color:var(--c-text-60);margin-bottom:var(--space-6)">
+            Не уверены, какой материал подойдёт именно вам? Проконсультируйтесь с нашим инженером бесплатно.
+          </p>
+          <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap">
+            <button class="btn btn--primary btn--xl" data-modal-open="contactModal" type="button">
+              Получить консультацию
+            </button>
+            <a href="javascript:history.back()" class="btn-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+              Вернуться к проекту
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</PageLayout>

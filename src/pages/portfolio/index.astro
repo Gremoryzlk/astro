@@ -1,0 +1,195 @@
+---
+/**
+ * pages/portfolio/index.astro — Каталог портфолио
+ * Список строится из portfolio.json — добавить объект = добавить запись.
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+import PortfolioCard from '@components/portfolio/PortfolioCard.astro';
+import { getAllPortfolioObjects, getPortfolioMapPoints } from '@lib/getPortfolio';
+
+const objects   = await getAllPortfolioObjects();
+const mapPoints = await getPortfolioMapPoints();
+
+// Уникальные материалы для фильтра
+const materials = [...new Set(objects.map(o => o.walls))].sort();
+---
+
+<PageLayout
+  title="Наши работы"
+  description="Реализованные проекты загородных домов. Фото построенных объектов, карта объектов, история строительства."
+>
+
+  <!-- Шапка -->
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Реализованные проекты</p>
+      <h1 class="page-header__title">Наши работы</h1>
+      <p class="page-header__subtitle">
+        Более {objects.length} построенных домов в Ленинградской области.
+        Каждый объект — история доверия.
+      </p>
+    </div>
+  </div>
+
+  <section class="portfolio-catalog" id="portfolio">
+    <div class="container">
+
+      <!-- Управление -->
+      <div class="portfolio-controls">
+        <div style="display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap">
+
+          <!-- Фильтр-чипы (генерируется из реальных материалов) -->
+          <div class="filter-chips" id="portfolioFilter" role="group" aria-label="Фильтр по материалу">
+            <button class="filter-chip is-active" data-pf="all" type="button">Все</button>
+            {materials.map(mat => {
+              const tag = mat === 'Газобетон' ? 'gazobeton'
+                        : mat === 'Кирпич'    ? 'kirpich'
+                        : mat === 'Керамический блок' ? 'keramoblok'
+                        : mat.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <button class="filter-chip" data-pf={tag} type="button">{mat}</button>
+              );
+            })}
+            <button class="filter-chip" data-pf="1etazh"  type="button">1 этаж</button>
+            <button class="filter-chip" data-pf="2etazha" type="button">2 этажа</button>
+            <button class="filter-chip" data-pf="do150"   type="button">до 150 м²</button>
+            <button class="filter-chip" data-pf="150-250" type="button">150–250 м²</button>
+          </div>
+
+          <!-- Кнопка карты -->
+          <button class="portfolio-map-btn" id="mapToggle" aria-expanded="false" aria-controls="portfolioMap" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Показать на карте
+          </button>
+        </div>
+
+        <!-- Вид: сетка / список -->
+        <div class="portfolio-view-toggle" role="group" aria-label="Вид отображения">
+          <button class="portfolio-view-btn is-active" id="viewGrid" aria-label="Сетка" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+            </svg>
+          </button>
+          <button class="portfolio-view-btn" id="viewList" aria-label="Список" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true">
+              <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+              <circle cx="3" cy="6" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="18" r="1"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Карта (скрыта по умолчанию) -->
+      <div class="portfolio-map-panel" id="portfolioMap" aria-hidden="true">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=29.5,59.2,31.0,60.2&layer=mapnik"
+          title="Карта построенных объектов"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <!-- Сетка объектов -->
+      <div class="portfolio-grid" id="portfolioGrid">
+        {objects.map((obj, i) => (
+          <PortfolioCard object={obj} index={i} />
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Фото этапов стройки -->
+  <section id="stages" style="background:var(--c-sand);padding-block:var(--section-gap)" aria-labelledby="stagesTitle">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <span class="section-header__eyebrow">Процесс</span>
+        <h2 class="section-header__title" id="stagesTitle">Фото этапов стройки</h2>
+        <p class="section-header__subtitle">
+          От разметки фундамента до финальной сдачи — фиксируем каждый этап.
+        </p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4)">
+        {['Разметка участка', 'Заливка фундамента', 'Кладка стен', 'Монтаж кровли'].map((label, i) => (
+          <div class="construction-photo" data-reveal data-reveal-delay={i}
+               style={`background:linear-gradient(135deg,hsl(${155 + i*8},52%,${30 - i*3}%),hsl(${145 + i*8},45%,${20 - i*3}%))`}>
+            <div style="height:100%;display:flex;align-items:flex-end;padding:var(--space-4)">
+              <span style="font-size:var(--fs-xs);color:rgba(255,255,255,.7);font-weight:500;letter-spacing:.1em;text-transform:uppercase">
+                {label}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Запись на экскурсию -->
+  <section style="padding-block:var(--section-gap)" aria-labelledby="tourTitle">
+    <div class="container" style="text-align:center">
+      <h2 style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-4)" id="tourTitle" data-reveal>
+        Хотите увидеть вживую?
+      </h2>
+      <p style="font-size:var(--fs-md);color:var(--c-text-60);max-width:480px;margin:0 auto var(--space-8);line-height:1.8" data-reveal data-reveal-delay="1">
+        Организуем экскурсию по нашим объектам. Посмотрите качество работ своими глазами.
+      </p>
+      <button class="btn btn--primary btn--xl" data-modal-open="contactModal" data-reveal data-reveal-delay="2" type="button">
+        Записаться на экскурсию
+      </button>
+    </div>
+  </section>
+
+</PageLayout>
+
+<!-- Плавающая кнопка экскурсии -->
+<a href="#" class="portfolio-excursion" data-modal-open="contactModal" aria-label="Записаться на экскурсию по объектам">
+  Запись на экскур&shy;сию по объектам
+</a>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  // Фильтр-чипы
+  const chips = document.querySelectorAll('#portfolioFilter .filter-chip');
+  const cards = document.querySelectorAll('#portfolioGrid .portfolio-card');
+  let activeTag = 'all';
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      activeTag = chip.dataset.pf;
+      chips.forEach(c => c.classList.toggle('is-active', c === chip));
+      cards.forEach(card => {
+        const tags = (card.dataset.pfTags || '').split(' ');
+        card.style.display = (activeTag === 'all' || tags.includes(activeTag)) ? '' : 'none';
+      });
+    });
+  });
+
+  // Переключение карты
+  const mapBtn   = document.getElementById('mapToggle');
+  const mapPanel = document.getElementById('portfolioMap');
+  mapBtn?.addEventListener('click', () => {
+    const open = mapPanel.classList.toggle('is-visible');
+    mapBtn.setAttribute('aria-expanded', String(open));
+    mapPanel.setAttribute('aria-hidden',  String(!open));
+    mapBtn.innerHTML = open
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 6L6 18M6 6l12 12"/></svg> Скрыть карту`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Показать на карте`;
+  });
+
+  // Вид: сетка / список
+  document.getElementById('viewGrid')?.addEventListener('click', () => {
+    document.getElementById('portfolioGrid').classList.remove('portfolio-grid--list');
+    document.getElementById('viewGrid').classList.add('is-active');
+    document.getElementById('viewList').classList.remove('is-active');
+  });
+  document.getElementById('viewList')?.addEventListener('click', () => {
+    document.getElementById('portfolioGrid').classList.add('portfolio-grid--list');
+    document.getElementById('viewList').classList.add('is-active');
+    document.getElementById('viewGrid').classList.remove('is-active');
+  });
+});
+</script>

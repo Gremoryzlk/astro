@@ -1,0 +1,222 @@
+[
+  {
+    "slug": "vyritsy-1",
+    "name": "Дом в д. Вырицы",
+    "location": "д. Вырицы, Гатчинский район",
+    "projectSlug": "tk-2",
+    "area": 152,
+    "floors": 1,
+    "foundation": "Монолитная плита",
+    "walls": "Газобетон",
+    "roof": "Плоская",
+    "constructionDays": 299,
+    "coords": [59.394, 30.340],
+    "heroImage": "/assets/images/portfolio/vyritsy-1.jpg",
+    "gallery": [
+      "/assets/images/portfolio/vyritsy-1.jpg",
+      "/assets/images/portfolio/vyritsy-1-2.jpg",
+      "/assets/images/portfolio/vyritsy-1-3.jpg"
+    ],
+    "constructionPhotos": [
+      { "label": "Разметка участка",    "image": "/assets/images/portfolio/vyritsy-1-build-1.jpg" },
+      { "label": "Заливка фундамента",  "image": "/assets/images/portfolio/vyritsy-1-build-2.jpg" },
+      { "label": "Кладка стен",         "image": "/assets/images/portfolio/vyritsy-1-build-3.jpg" },
+      { "label": "Монтаж кровли",       "image": "/assets/images/portfolio/vyritsy-1-build-4.jpg" },
+      { "label": "Инженерия",           "image": "/assets/images/portfolio/vyritsy-1-build-5.jpg" },
+      { "label": "Готово",              "image": "/assets/images/portfolio/vyritsy-1-build-6.jpg" }
+    ],
+    "reels": [],
+    "descriptionShort": "Современный одноэтажный дом для круглогодичного проживания. Монолитная плита и стены из газобетона обеспечивают комфортный микроклимат.",
+    "descriptionFull": "Современный одноэтажный дом для круглогодичного проживания. Монолитная плита и стены из газобетона обеспечивают комфортный микроклимат.\n\nПанорамное остекление объединяет интерьер с природой. Плоская кровля с системой подогрева водосточных труб исключает образование наледи. Внутренняя отделка выполнена в нейтральных тонах, что позволяет легко адаптировать пространство под любой стиль.",
+    "worksPerformed": [
+      {
+        "title": "Фундамент и подготовительные работы",
+        "description": "Расчистка и планировка участка, устройство монолитной плиты М300 с армированием, гидроизоляция и утепление фундамента пеноплексом 50 мм, установка закладных для инженерных коммуникаций."
+      },
+      {
+        "title": "Возведение стен из газобетона",
+        "description": "Кладка стен из газобетонных блоков D400 толщиной 400 мм на специализированный клей, перевязка рядов, устройство монолитного армопояса, монтаж перемычек над проёмами."
+      },
+      {
+        "title": "Кровля и инженерные коммуникации",
+        "description": "Устройство плоской кровли с уклонообразующим слоем из пенополистирола, наплавляемая гидроизоляция в 2 слоя, система внутреннего водоотвода. Разводка электрики, водоснабжения и канализации."
+      }
+    ],
+    "status": "built",
+    "completedAt": "2024-08-15",
+    "publishedAt": "2024-09-01"
+  },
+  {
+    "slug": "smerdovitsy-1",
+    "name": "Дом в д. Смердовицы",
+    "location": "д. Смердовицы, Ленинградская область",
+    "projectSlug": "sv-3",
+    "area": 152,
+    "floors": 1,
+    "foundation": "Монолитная плита",
+    "walls": "Газобетон",
+    "roof": "Плоская",
+    "constructionDays": 299,
+    "coords": [59.540, 30.125],
+    "heroImage": "/assets/images/portfolio/smerdovitsy-1.jpg",
+    "gallery": [
+      "/assets/images/portfolio/smerdovitsy-1.jpg",
+      "/assets/images/portfolio/smerdovitsy-1-2.jpg"
+    ],
+    "constructionPhotos": [
+      { "label": "Разметка",       "image": "/assets/images/portfolio/smerdovitsy-1-build-1.jpg" },
+      { "label": "Фундамент",      "image": "/assets/images/portfolio/smerdovitsy-1-build-2.jpg" },
+      { "label": "Стены",          "image": "/assets/images/portfolio/smerdovitsy-1-build-3.jpg" },
+      { "label": "Кровля",         "image": "/assets/images/portfolio/smerdovitsy-1-build-4.jpg" },
+      { "label": "Инженерия",      "image": "/assets/images/portfolio/smerdovitsy-1-build-5.jpg" },
+      { "label": "Готово",         "image": "/assets/images/portfolio/smerdovitsy-1-build-6.jpg" }
+    ],
+    "reels": [
+      {
+        "thumbnail": "/assets/images/portfolio/smerdovitsy-reel-1.jpg",
+        "url": "https://t.me/chastdushi"
+      },
+      {
+        "thumbnail": "/assets/images/portfolio/smerdovitsy-reel-2.jpg",
+        "url": "https://t.me/chastdushi"
+      }
+    ],
+    "descriptionShort": "Одноэтажный дом 152 м² из газобетона с монолитной плитой и плоской кровлей. Сдан за 299 дней.",
+    "descriptionFull": "Одноэтажный дом с четырьмя спальнями, построенный в д. Смердовицы. Монолитная плита и стены из газобетона D400 обеспечивают надёжную теплозащиту.\n\nПлоская кровля с уклонообразующим слоем и внутренним водоотводом. Панорамные окна в гостиной выходят на лес.",
+    "worksPerformed": [
+      {
+        "title": "Фундамент",
+        "description": "Монолитная плита М300, армирование, утепление и гидроизоляция."
+      },
+      {
+        "title": "Стены и перекрытия",
+        "description": "Газобетон D400, 400 мм, на клею. Монолитный армопояс, плоские перемычки."
+      },
+      {
+        "title": "Кровля",
+        "description": "Плоская кровля с ПВХ-мембраной, внутренний водоотвод, утепление пенополистиролом."
+      }
+    ],
+    "status": "built",
+    "completedAt": "2024-07-20",
+    "publishedAt": "2024-08-10"
+  },
+  {
+    "slug": "privetlinskoe-1",
+    "name": "Дом в п. Приветлинское",
+    "location": "п. Приветлинское, Всеволожский район",
+    "projectSlug": "sv-3",
+    "area": 190,
+    "floors": 1,
+    "foundation": "Монолитная плита",
+    "walls": "Керамический блок",
+    "roof": "Двускатная",
+    "constructionDays": 320,
+    "coords": [59.756, 30.230],
+    "heroImage": "/assets/images/portfolio/privetlinskoe-1.jpg",
+    "gallery": [
+      "/assets/images/portfolio/privetlinskoe-1.jpg",
+      "/assets/images/portfolio/privetlinskoe-1-2.jpg"
+    ],
+    "constructionPhotos": [
+      { "label": "Фундамент",  "image": "/assets/images/portfolio/privetlinskoe-1-build-1.jpg" },
+      { "label": "Кладка",     "image": "/assets/images/portfolio/privetlinskoe-1-build-2.jpg" },
+      { "label": "Кровля",     "image": "/assets/images/portfolio/privetlinskoe-1-build-3.jpg" },
+      { "label": "Готово",     "image": "/assets/images/portfolio/privetlinskoe-1-build-4.jpg" }
+    ],
+    "reels": [],
+    "descriptionShort": "Одноэтажный дом 190 м² из керамического блока с двускатной кровлей и террасой.",
+    "descriptionFull": "Просторный одноэтажный дом из керамических блоков — один из лучших материалов по теплозащите. Двускатная кровля с металлочерепицей. Терраса 18 м² с видом на лес.",
+    "worksPerformed": [
+      {
+        "title": "Фундамент и кладка",
+        "description": "Монолитная плита, стены из керамических блоков 380 мм, монолитный пояс."
+      },
+      {
+        "title": "Кровля",
+        "description": "Двускатная стропильная кровля с металлочерепицей Монтеррей."
+      }
+    ],
+    "status": "built",
+    "completedAt": "2024-10-05",
+    "publishedAt": "2024-11-01"
+  },
+  {
+    "slug": "toksovo-1",
+    "name": "Дом в г. Токсово",
+    "location": "г. Токсово, Всеволожский район",
+    "projectSlug": "omega-2",
+    "area": 178,
+    "floors": 2,
+    "foundation": "Ленточный",
+    "walls": "Кирпич",
+    "roof": "Двускатная",
+    "constructionDays": 348,
+    "coords": [60.158, 30.508],
+    "heroImage": "/assets/images/portfolio/toksovo-1.jpg",
+    "gallery": [
+      "/assets/images/portfolio/toksovo-1.jpg"
+    ],
+    "constructionPhotos": [
+      { "label": "Фундамент",  "image": "/assets/images/portfolio/toksovo-1-build-1.jpg" },
+      { "label": "1 этаж",     "image": "/assets/images/portfolio/toksovo-1-build-2.jpg" },
+      { "label": "2 этаж",     "image": "/assets/images/portfolio/toksovo-1-build-3.jpg" },
+      { "label": "Готово",     "image": "/assets/images/portfolio/toksovo-1-build-4.jpg" }
+    ],
+    "reels": [],
+    "descriptionShort": "Двухэтажный кирпичный дом 178 м² в г. Токсово с двускатной кровлей и облицовочным кирпичом.",
+    "descriptionFull": "Классический двухэтажный дом из облицовочного кирпича. Четыре спальни, два санузла. Двускатная кровля с окнами-иллюминаторами на фасаде.",
+    "worksPerformed": [
+      {
+        "title": "Фундамент",
+        "description": "Ленточный монолитный фундамент с подвалом."
+      },
+      {
+        "title": "Кирпичная кладка",
+        "description": "Облицовочный кирпич ручной формовки, монолитные перекрытия."
+      }
+    ],
+    "status": "built",
+    "completedAt": "2024-03-12",
+    "publishedAt": "2024-04-01"
+  },
+  {
+    "slug": "siversky-1",
+    "name": "Дом в г. Сиверский",
+    "location": "г. Сиверский, Гатчинский район",
+    "projectSlug": "sv-3",
+    "area": 165,
+    "floors": 1,
+    "foundation": "Монолитная плита",
+    "walls": "Газобетон",
+    "roof": "Плоская",
+    "constructionDays": 312,
+    "coords": [59.354, 30.066],
+    "heroImage": "/assets/images/portfolio/siversky-1.jpg",
+    "gallery": [
+      "/assets/images/portfolio/siversky-1.jpg"
+    ],
+    "constructionPhotos": [
+      { "label": "Фундамент",  "image": "/assets/images/portfolio/siversky-1-build-1.jpg" },
+      { "label": "Стены",      "image": "/assets/images/portfolio/siversky-1-build-2.jpg" },
+      { "label": "Кровля",     "image": "/assets/images/portfolio/siversky-1-build-3.jpg" }
+    ],
+    "reels": [
+      {
+        "thumbnail": "/assets/images/portfolio/siversky-reel-1.jpg",
+        "url": "https://vk.com/chastdushi"
+      }
+    ],
+    "descriptionShort": "Одноэтажный дом 165 м² из газобетона с плоской кровлей в г. Сиверский.",
+    "descriptionFull": "Современный одноэтажный дом на 5 комнат с просторной гостиной и отдельным кабинетом. Плоская кровля с системой снеготаяния.",
+    "worksPerformed": [
+      {
+        "title": "Полный цикл",
+        "description": "Фундамент, стены газобетон, плоская кровля, инженерные системы."
+      }
+    ],
+    "status": "built",
+    "completedAt": "2024-12-20",
+    "publishedAt": "2025-01-10"
+  }
+]

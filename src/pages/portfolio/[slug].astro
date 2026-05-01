@@ -1,0 +1,265 @@
+---
+/**
+ * pages/portfolio/[slug].astro — Страница построенного объекта
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+import { getAllPortfolioSlugs, getPortfolioObjectBySlug } from '@lib/getPortfolio';
+import { getProjectBySlug } from '@lib/getProjects';
+
+export async function getStaticPaths() {
+  const slugs = await getAllPortfolioSlugs();
+  return slugs.map(slug => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const object = await getPortfolioObjectBySlug(slug!);
+if (!object) return Astro.redirect('/404/');
+
+const sourceProject = object.projectSlug
+  ? await getProjectBySlug(object.projectSlug)
+  : null;
+---
+
+<PageLayout
+  title={object.name}
+  description={object.descriptionShort}
+>
+  <div class="portfolio-object" style="padding-top:calc(var(--header-h) + var(--space-4))">
+
+    <!-- Хлебные крошки -->
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Навигация">
+        <span class="breadcrumb__item"><a href="/">Главная</a></span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item"><a href="/portfolio/">Наши работы</a></span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">{object.name}</span>
+      </nav>
+    </div>
+
+    <div class="container" style="padding-block:var(--space-6) var(--section-gap)">
+      <div class="portfolio-object__layout">
+
+        <!-- ── ОСНОВНОЙ КОНТЕНТ ── -->
+        <div class="portfolio-object__main">
+
+          <!-- Заголовок + галерея -->
+          <div>
+            <h1 style="font-family:var(--ff-display);font-size:var(--fs-4xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-6)" data-reveal>
+              {object.name}
+            </h1>
+
+            <!-- Слайдер -->
+            <div class="project-slider" id="objectSlider" aria-label="Фотографии объекта">
+              <div class="project-slider__track">
+                {object.gallery.map((src, i) => (
+                  <div class="project-slider__slide">
+                    <img
+                      src={src}
+                      alt={`${object.name} — фото ${i + 1}`}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      width="960"
+                      height="600"
+                    />
+                  </div>
+                ))}
+                {object.gallery.length === 0 && (
+                  <div class="project-slider__slide">
+                    <div class="project-slider__slide-placeholder">{object.name}</div>
+                  </div>
+                )}
+              </div>
+
+              {object.gallery.length > 1 && (
+                <>
+                  <button class="project-slider__prev" aria-label="Предыдущее фото" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <button class="project-slider__next" aria-label="Следующее фото" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                  <div class="project-slider__dots" role="tablist">
+                    {object.gallery.map((_, i) => (
+                      <button class:list={['project-slider__dot', {'is-active': i===0}]} type="button" aria-label={`Фото ${i+1}`}/>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          <!-- Описание -->
+          <div data-reveal>
+            <h2 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-4)">
+              Описание проекта
+            </h2>
+            <p style="font-size:var(--fs-base);color:var(--c-text-60);line-height:1.8;margin-bottom:var(--space-3)" id="descShort">
+              {object.descriptionShort}
+            </p>
+            {object.descriptionFull !== object.descriptionShort && (
+              <>
+                <div id="descFull" style="display:none">
+                  {object.descriptionFull.split('\n\n').slice(1).map(para => (
+                    <p style="font-size:var(--fs-base);color:var(--c-text-60);line-height:1.8;margin-bottom:var(--space-3)">{para}</p>
+                  ))}
+                </div>
+                <button class="btn-link" id="descToggle" aria-expanded="false" type="button">
+                  Читать полностью
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" id="descArrow"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+              </>
+            )}
+          </div>
+
+          <!-- Планировки -->
+          <div data-reveal>
+            <h2 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-5)">
+              Планировки
+            </h2>
+            {sourceProject ? (
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+                {sourceProject.floorPlans.map(plan => (
+                  <div class="floor-plan-image" data-lightbox="objplans" data-src={plan.image}>
+                    <img src={plan.image} alt={`Планировка ${plan.label}`} loading="lazy" decoding="async" />
+                    <div class="floor-plan-image__label">{plan.label} · {plan.area} м²</div>
+                    <div class="floor-plan-image__zoom" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style="color:var(--c-text-60)">Планировки для этого объекта готовятся.</p>
+            )}
+          </div>
+
+          <!-- История строительства -->
+          <div data-reveal>
+            <h2 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-5)">
+              История строительства
+            </h2>
+            <div class="construction-gallery">
+              {object.constructionPhotos.map(photo => (
+                <div class="construction-photo" data-lightbox="build" data-src={photo.image}>
+                  <img src={photo.image} alt={photo.label} loading="lazy" decoding="async" />
+                  <div style="position:absolute;bottom:var(--space-3);left:var(--space-3)">
+                    <span style="font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;font-weight:500">
+                      {photo.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Произведённые работы -->
+          {object.worksPerformed.length > 0 && (
+            <div data-reveal>
+              <h2 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-4)">
+                Произведённые работы
+              </h2>
+              <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+                {object.worksPerformed.map(work => (
+                  <div class="expandable">
+                    <div class="expandable__trigger" role="button" tabindex="0" aria-expanded="false">
+                      <span class="expandable__trigger-title">{work.title}</span>
+                      <div class="expandable__trigger-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 5v14M5 12h14"/></svg>
+                      </div>
+                    </div>
+                    <div class="expandable__body">
+                      <div class="expandable__content">{work.description}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Видео-рилсы -->
+          {object.reels.length > 0 && (
+            <div data-reveal>
+              <h2 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-5)">
+                Видео с объекта
+              </h2>
+              <div class="reels-grid">
+                {object.reels.map(reel => (
+                  <a href={reel.url} class="reel-item" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видео">
+                    <img src={reel.thumbnail} alt="Превью видео" loading="lazy" decoding="async" />
+                    <div class="reel-item__play">
+                      <div class="reel-item__play-icon">
+                        <svg viewBox="0 0 24 24" fill="var(--c-forest)" width="22" height="22" aria-hidden="true">
+                          <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+        </div><!-- /main -->
+
+        <!-- ── САЙДБАР ── -->
+        <aside class="portfolio-object__sidebar">
+          <div class="object-info-card">
+            <div class="object-info-card__header">
+              <h2 class="object-info-card__title">Характеристики</h2>
+            </div>
+            <div class="object-info-card__body">
+              {[
+                { label: 'Срок строительства', value: `${object.constructionDays} дней` },
+                { label: 'Площадь',            value: `${object.area} м²`              },
+                { label: 'Этажность',          value: `${object.floors} эт.`           },
+                { label: 'Фундамент',          value: object.foundation               },
+                { label: 'Стены',              value: object.walls                    },
+                { label: 'Кровля',             value: object.roof                     },
+              ].map(row => (
+                <div class="spec-row">
+                  <span class="spec-row__label">{row.label}</span>
+                  <span class="spec-row__value">{row.value}</span>
+                </div>
+              ))}
+            </div>
+            <div class="object-info-card__footer">
+              <button class="btn btn--outline btn--sm btn--block" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Смотреть на карте
+              </button>
+              {sourceProject && (
+                <a href={`/projects/${sourceProject.slug}/`} class="btn btn--primary btn--sm btn--block">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  Проект {sourceProject.name}
+                </a>
+              )}
+              <button class="btn btn--accent btn--sm btn--block" data-modal-open="contactModal" type="button">
+                Хочу такой дом
+              </button>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+</PageLayout>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('descToggle');
+  const full   = document.getElementById('descFull');
+  const arrow  = document.getElementById('descArrow');
+  toggle?.addEventListener('click', () => {
+    const open = full.style.display !== 'none';
+    full.style.display    = open ? 'none' : 'block';
+    arrow.style.transform = open ? '' : 'rotate(180deg)';
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.firstChild.textContent = open ? 'Читать полностью' : 'Свернуть';
+  });
+});
+</script>
+<script>
+  import '@scripts/slider.ts';
+</script>

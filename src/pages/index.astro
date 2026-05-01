@@ -1,0 +1,251 @@
+---
+/**
+ * pages/index.astro — Главная страница
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+import ProjectCard from '@components/project/ProjectCard.astro';
+import PortfolioCard from '@components/portfolio/PortfolioCard.astro';
+import { getAllProjects } from '@lib/getProjects';
+import { getAllPortfolioObjects } from '@lib/getPortfolio';
+import site from '@data/site.json';
+
+const allProjects  = await getAllProjects();
+const featuredProjects = allProjects.slice(0, 3); // три самых свежих
+
+const allPortfolio = await getAllPortfolioObjects();
+const featuredPortfolio = allPortfolio.slice(0, 3);
+
+const SERVICES = [
+  { title: 'Проектирование',      href: '/services/design/',      desc: 'Архитектурный проект, конструктив, инженерные разделы. Полный пакет документации.' },
+  { title: 'Фундамент под ключ',  href: '/services/foundation/',  desc: 'Монолитная плита, ленточный и свайно-ростверковый — под любые грунты.' },
+  { title: 'Монтаж кровли',       href: '/services/roofing/',     desc: 'Скатные, плоские, эксплуатируемые. Любые кровельные материалы.' },
+  { title: 'Инженерные сети',     href: '/services/engineering/', desc: 'Электрика, водоснабжение, канализация, отопление, вентиляция.' },
+  { title: 'Отделка под ключ',    href: '/services/finishing/',   desc: 'Черновая и чистовая отделка. Сдаём дом полностью готовым к заселению.' },
+] as const;
+---
+
+<PageLayout>
+  <!-- ═══ HERO ══════════════════════════════════════════ -->
+  <section class="hero" aria-label="Главный баннер">
+    <div class="hero__background">
+      <div class="hero__bg-image"></div>
+      <div class="hero__overlay"></div>
+    </div>
+
+    <div class="container">
+      <div class="hero__content">
+        <div class="hero__eyebrow" data-reveal>
+          Строительная компания · с {site.company.foundedYear} года
+        </div>
+        <h1 class="hero__title" data-reveal data-reveal-delay="1">
+          Дом — это<br /><em>часть души</em>
+        </h1>
+        <p class="hero__subtitle" data-reveal data-reveal-delay="2">
+          Проектируем и строим загородные дома из газобетона, кирпича и
+          керамических блоков в Ленинградской области. Фиксированные сроки
+          и прозрачные цены.
+        </p>
+        <div class="hero__actions" data-reveal data-reveal-delay="3">
+          <a href="/projects/" class="btn btn--primary btn--xl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+            Смотреть проекты
+          </a>
+          <button class="btn btn--outline-white btn--xl" data-modal-open="contactModal" type="button">
+            Получить консультацию
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="hero__stats">
+      <div class="container">
+        <div class="hero__stats-inner">
+          <div class="hero__stat" data-reveal>
+            <span class="hero__stat-value">
+              <span data-counter={site.stats.builtHomes}>{site.stats.builtHomes}</span>+
+            </span>
+            <span class="hero__stat-label">Построенных домов</span>
+          </div>
+          <div class="hero__stat" data-reveal data-reveal-delay="1">
+            <span class="hero__stat-value">
+              <span data-counter={site.stats.yearsOnMarket}>{site.stats.yearsOnMarket}</span>
+            </span>
+            <span class="hero__stat-label">Лет на рынке</span>
+          </div>
+          <div class="hero__stat" data-reveal data-reveal-delay="2">
+            <span class="hero__stat-value">
+              <span data-counter={site.stats.projectsInCatalog}>{site.stats.projectsInCatalog}</span>
+            </span>
+            <span class="hero__stat-label">Проектов в каталоге</span>
+          </div>
+          <div class="hero__stat" data-reveal data-reveal-delay="3">
+            <span class="hero__stat-value">
+              <span data-counter={site.stats.satisfactionPercent}>{site.stats.satisfactionPercent}</span>%
+            </span>
+            <span class="hero__stat-label">Клиентов довольны</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true">
+      <div class="hero__scroll-line"></div>
+      <span>Листать</span>
+    </div>
+  </section>
+
+  <!-- ═══ ПРЕИМУЩЕСТВА ═════════════════════════════════ -->
+  <section class="home-intro section-gap" aria-labelledby="introTitle">
+    <div class="container">
+      <div class="home-intro__grid">
+        <div class="home-intro__image-wrap" data-reveal>
+          <div class="home-intro__image"></div>
+          <div class="home-intro__badge">
+            <span class="home-intro__badge-num">{site.stats.builtHomes}</span>
+            <span class="home-intro__badge-text">домов построено</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-header" data-reveal>
+            <span class="section-header__eyebrow">Почему мы</span>
+            <h2 class="section-header__title" id="introTitle">Строим как для себя</h2>
+            <p class="section-header__subtitle">
+              Каждый дом — индивидуальный проект с учётом ваших пожеланий,
+              участка и бюджета.
+            </p>
+          </div>
+          <div class="home-intro__list">
+            {[
+              { title: `Гарантия на ${site.stats.warrantyYears} лет`,    text: 'Официальная гарантия на конструктив и все выполненные работы.' },
+              { title: 'Фиксированные сроки',  text: 'Прописываем даты в договоре и несём финансовую ответственность.' },
+              { title: 'Прозрачная цена',      text: 'Фиксируем стоимость до начала строительства — никаких скрытых платежей.' },
+              { title: 'Полный пакет документов', text: 'Архитектурный проект, конструктив, инженерные разделы и сметы.' },
+            ].map((item, i) => (
+              <div class="home-intro__item" data-reveal data-reveal-delay={i + 1}>
+                <div class="home-intro__item-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="home-intro__item-title">{item.title}</div>
+                  <p class="home-intro__item-text">{item.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ПОПУЛЯРНЫЕ ПРОЕКТЫ ════════════════════════════ -->
+  <section class="home-projects section-gap" aria-labelledby="projectsTitle">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <span class="section-header__eyebrow">Каталог</span>
+        <h2 class="section-header__title" id="projectsTitle">Популярные проекты</h2>
+        <p class="section-header__subtitle">
+          Готовые архитектурные решения — выбирайте и начинайте строительство.
+        </p>
+      </div>
+
+      <div class="home-projects__grid">
+        {featuredProjects.map((project, i) => (
+          <ProjectCard project={project} index={i} />
+        ))}
+      </div>
+
+      <div style="text-align:center;margin-top:var(--space-10)" data-reveal>
+        <a href="/projects/" class="btn btn--primary btn--lg">
+          Все проекты
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ УСЛУГИ ════════════════════════════════════════ -->
+  <section class="home-services section-gap" aria-labelledby="servicesTitle">
+    <div class="container">
+      <div class="section-header section-header--center" data-reveal>
+        <span class="section-header__eyebrow" style="color:rgba(255,255,255,.5)">Что мы делаем</span>
+        <h2 class="section-header__title" id="servicesTitle" style="color:var(--c-white)">
+          Полный цикл строительства
+        </h2>
+      </div>
+      <div class="home-services__grid">
+        {SERVICES.map((svc, i) => (
+          <a href={svc.href} class="home-service-card" data-reveal data-reveal-delay={i}>
+            <div class="home-service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.5" width="22" height="22">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <h3 class="home-service-card__title">{svc.title}</h3>
+            <p class="home-service-card__text">{svc.desc}</p>
+            <span class="home-service-card__link">
+              Подробнее
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ПОРТФОЛИО ════════════════════════════════════ -->
+  <section class="home-portfolio section-gap" aria-labelledby="portfolioTitle">
+    <div class="container">
+      <div class="section-header section-header--row" data-reveal>
+        <div>
+          <span class="section-header__eyebrow">Реализованные проекты</span>
+          <h2 class="section-header__title" id="portfolioTitle">Наши работы</h2>
+        </div>
+        <a href="/portfolio/" class="btn-link hide-mobile" data-reveal>
+          Все объекты
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="home-portfolio__grid">
+        {featuredPortfolio.map((obj, i) => (
+          <PortfolioCard object={obj} index={i} />
+        ))}
+      </div>
+
+      <div style="text-align:center;margin-top:var(--space-8)">
+        <a href="/portfolio/" class="btn btn--outline btn--lg">Смотреть все работы</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══════════════════════════════════════════ -->
+  <section class="home-cta" aria-labelledby="ctaTitle">
+    <div class="container">
+      <h2 class="home-cta__title t-display" id="ctaTitle" data-reveal>
+        Готовы начать строительство?
+      </h2>
+      <p class="home-cta__text" data-reveal data-reveal-delay="1">
+        Оставьте заявку — подберём проект, рассчитаем стоимость и ответим
+        на все вопросы бесплатно.
+      </p>
+      <div class="home-cta__actions" data-reveal data-reveal-delay="2">
+        <button class="btn btn--accent btn--xl" data-modal-open="contactModal" type="button">
+          Получить бесплатную консультацию
+        </button>
+        <a href="/mortgage/" class="btn btn--outline-white btn--xl">Рассчитать ипотеку</a>
+      </div>
+    </div>
+  </section>
+</PageLayout>

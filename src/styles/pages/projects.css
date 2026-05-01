@@ -1,0 +1,117 @@
+/* ══════════════════════════════════════════════
+   PROJECTS PAGE
+══════════════════════════════════════════════ */
+
+.page-header {
+  background: var(--c-forest);
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 5vw, 4rem));
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+.page-header__eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: var(--space-3);
+}
+.page-header__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-light);
+  color: var(--c-white);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin-bottom: var(--space-4);
+}
+.page-header__subtitle {
+  font-size: var(--fs-md);
+  color: rgba(255,255,255,0.6);
+  max-width: 540px;
+  line-height: var(--lh-loose);
+}
+
+/* ── PROJECTS CATALOG ────────────────────────── */
+.projects-catalog { padding-block: clamp(3rem, 6vw, 5rem) var(--section-gap); }
+
+/* Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  transition: opacity var(--dur-base);
+}
+.projects-grid.is-filtering { opacity: 0.4; pointer-events: none; }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-10);
+}
+.pagination__btn {
+  width: 40px; height: 40px;
+  border: 1px solid var(--c-stone);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+  cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast), color var(--dur-fast);
+}
+.pagination__btn:hover { border-color: var(--c-forest); color: var(--c-forest); background: var(--c-forest-10); }
+.pagination__btn.is-active {
+  background: var(--c-forest);
+  border-color: var(--c-forest);
+  color: var(--c-white);
+}
+.pagination__btn--icon svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+.pagination__ellipsis {
+  padding-inline: var(--space-2);
+  color: var(--c-text-60);
+  user-select: none;
+}
+
+/* ── FILTER SIDEBAR LAYOUT ───────────────────── */
+/* NOTE: Filter uses full-width panel (not sidebar) per TZ requirement (GoodWood style) */
+
+/* Active filters row */
+.active-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-3) 0;
+}
+.active-filters__label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-text-60);
+  margin-right: var(--space-1);
+}
+.active-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--c-forest);
+  color: var(--c-white);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.active-filter-tag:hover { background: #0a2d22; }
+.active-filter-tag svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+@media (max-width: 960px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 580px) {
+  .projects-grid { grid-template-columns: 1fr; }
+}

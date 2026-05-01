@@ -1,0 +1,105 @@
+---
+/**
+ * pages/projects/index.astro — Каталог проектов
+ *
+ * При добавлении нового проекта в projects.json он автоматически
+ * появляется здесь — ничего менять не нужно.
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+import ProjectCard from '@components/project/ProjectCard.astro';
+import ProjectFilter from '@components/project/ProjectFilter.astro';
+import { getAllProjects } from '@lib/getProjects';
+
+const projects = await getAllProjects();
+---
+
+<PageLayout
+  title="Проекты домов"
+  description="Каталог проектов загородных домов из газобетона, кирпича и керамических блоков. Фильтрация по площади, этажности, цене."
+>
+  <!-- Шапка страницы -->
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Каталог</p>
+      <h1 class="page-header__title">Проекты домов</h1>
+      <p class="page-header__subtitle">
+        Выберите готовый проект или закажите индивидуальное проектирование.
+      </p>
+    </div>
+  </div>
+
+  <section class="projects-catalog">
+    <div class="container">
+
+      <!-- Фильтр — читает реальные min/max из JSON -->
+      <ProjectFilter />
+
+      <!-- Активные теги фильтра -->
+      <div id="activeTagsRow" style="display:none" aria-live="polite">
+        <div class="active-filters">
+          <span class="active-filters__label">Фильтры:</span>
+          <div id="activeTags"></div>
+        </div>
+      </div>
+
+      <!-- Строка сортировки -->
+      <div class="sort-bar">
+        <p class="sort-bar__count">
+          Найдено: <strong id="projectCount">{projects.length}</strong> проектов
+        </p>
+        <div class="sort-bar__controls" role="group" aria-label="Сортировка">
+          <span class="sort-bar__label">Сортировать:</span>
+          <button class="sort-chip is-active" data-sort="price_asc"  type="button">Цена ↑</button>
+          <button class="sort-chip"           data-sort="price_desc" type="button">Цена ↓</button>
+          <button class="sort-chip"           data-sort="area_asc"   type="button">Площадь ↑</button>
+          <button class="sort-chip"           data-sort="area_desc"  type="button">Площадь ↓</button>
+          <button class="sort-chip"           data-sort="new"        type="button">Новинки</button>
+        </div>
+      </div>
+
+      <!-- Сетка проектов — все карточки рендерятся из JSON -->
+      <div class="projects-grid" id="projectsGrid">
+        {projects.map((project, i) => (
+          <ProjectCard project={project} index={i} />
+        ))}
+      </div>
+
+      <!-- Сравнение -->
+      <div style="text-align:center;margin-top:var(--space-10);padding-top:var(--space-8);border-top:1px solid var(--c-stone)" data-reveal>
+        <p style="font-size:var(--fs-sm);color:var(--c-text-60);margin-bottom:var(--space-4)">
+          Не можете выбрать? Сравните несколько проектов рядом.
+        </p>
+        <a href="/compare/" class="btn btn--outline btn--lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true">
+            <rect x="3" y="3" width="4" height="18"/>
+            <rect x="10" y="8" width="4" height="13"/>
+            <rect x="17" y="5" width="4" height="16"/>
+          </svg>
+          Сравнить проекты
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Индивидуальный проект CTA -->
+  <section style="background:var(--c-sand);padding-block:var(--section-gap)" data-reveal>
+    <div class="container" style="text-align:center">
+      <span class="t-label" style="color:var(--c-text-60)">Не нашли подходящий вариант?</span>
+      <h2 style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;letter-spacing:-0.02em;margin:var(--space-3) 0 var(--space-4)">
+        Разработаем проект под вас
+      </h2>
+      <p style="font-size:var(--fs-md);color:var(--c-text-60);max-width:480px;margin:0 auto var(--space-8);line-height:1.8">
+        Создадим индивидуальный проект с учётом участка, стиля жизни и бюджета.
+      </p>
+      <a href="/services/design/#calculator" class="btn btn--primary btn--xl">
+        Рассчитать стоимость проекта
+      </a>
+    </div>
+  </section>
+</PageLayout>
+
+<!-- Клиентские скрипты каталога -->
+<script>
+  import '@scripts/filter.ts';
+  import '@scripts/compare.ts';
+</script>

@@ -1,0 +1,206 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+
+const STAGES = [
+  { num: '1', title: 'Встреча и техническое задание', text: 'Обсуждаем пожелания, анализируем участок, составляем ТЗ. Онлайн или в офисе.' },
+  { num: '2', title: 'Эскизный проект',               text: 'Разрабатываем 2–3 варианта планировочных решений на выбор за 5–7 рабочих дней.' },
+  { num: '3', title: 'Рабочая документация',           text: 'После утверждения эскиза разрабатываем полный комплект рабочих чертежей.' },
+  { num: '4', title: 'Согласование и передача',        text: 'Вносим правки, согласовываем с заказчиком и передаём полный пакет документов.' },
+] as const;
+
+const TERMS = [
+  { label: 'Эскизный проект',       value: '5–7 дней' },
+  { label: 'Рабочая документация',  value: '14–21 день' },
+  { label: 'Конструктивный проект', value: '7–10 дней' },
+] as const;
+
+const ADDONS = [
+  { key: '3d-model',    label: '3D-моделирование',              price: '45 000 ₽' },
+  { key: 'struct-lsts', label: 'Конструктивный проект ЛСТК',    price: 'от 18 000 ₽' },
+  { key: 'struct-gaz',  label: 'Конструктивный проект газ/кирп.', price: 'от 22 000 ₽' },
+  { key: 'audit',       label: 'Аудит участка (Ленобласть)',    price: '15 000 ₽' },
+  { key: 'design',      label: 'Дизайн-проект',                 price: 'от 35 000 ₽' },
+  { key: 'binding',     label: 'Привязка к участку',            price: '12 000 ₽' },
+  { key: 'visit',       label: 'Выезд архитектора на участок',  price: '8 000 ₽' },
+] as const;
+---
+
+<PageLayout
+  title="Проектирование домов"
+  description="Архитектурное проектирование загородных домов. Индивидуальные проекты. Рассчитайте стоимость онлайн."
+>
+
+  <div class="service-hero">
+    <div class="container">
+      <nav class="breadcrumb" style="margin-bottom:var(--space-6)" aria-label="Навигация">
+        <span class="breadcrumb__item"><a href="/" style="color:rgba(255,255,255,.5)">Главная</a></span>
+        <span class="breadcrumb__sep" style="color:rgba(255,255,255,.3)" aria-hidden="true">›</span>
+        <span class="breadcrumb__item" style="color:rgba(255,255,255,.7)">Проектирование</span>
+      </nav>
+      <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:var(--space-3)">Услуга</p>
+      <h1 class="service-hero__title">Архитектурное проектирование</h1>
+      <p class="service-hero__text">
+        Разрабатываем индивидуальные проекты домов с нуля: от эскиза до полного пакета
+        рабочей документации. Учитываем особенности вашего участка, пожелания и бюджет.
+      </p>
+    </div>
+  </div>
+
+  <div class="service-content">
+    <div class="container">
+      <div class="service-content__grid">
+
+        <div class="service-content__body">
+
+          <!-- Что включено -->
+          <div data-reveal>
+            <h2 class="service-content__section-title">Что входит в проект</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+              {[
+                { title: 'Основная документация', items: ['Привязка проекта к участку', 'План фундамента', 'Архитектурный раздел', 'Эскизный проект инженерии'] },
+                { title: 'Дополнительно (платно)', items: ['3D-моделирование', 'Конструктивный проект', 'Аудит участка', 'Дизайн-проект'] },
+              ].map(col => (
+                <div style="background:var(--c-sand);border-radius:var(--radius-md);padding:var(--space-5)">
+                  <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-text-60);margin-bottom:var(--space-4)">{col.title}</p>
+                  <ul style="display:flex;flex-direction:column;gap:var(--space-3)">
+                    {col.items.map(item => (
+                      <li style="display:flex;align-items:center;gap:var(--space-3);font-size:var(--fs-sm);color:var(--c-text-60)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-forest)" stroke-width="2" width="16" height="16" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Этапы -->
+          <div data-reveal>
+            <h2 class="service-content__section-title">Этапы проектирования</h2>
+            <div class="service-stages">
+              {STAGES.map(s => (
+                <div class="service-stage">
+                  <div class="service-stage__num">{s.num}</div>
+                  <div class="service-stage__content">
+                    <div class="service-stage__title">{s.title}</div>
+                    <p class="service-stage__text">{s.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Калькулятор стоимости -->
+          <div id="calculator" data-reveal>
+            <div class="design-calc" id="designCalc">
+              <div class="design-calc__header">
+                <h2 class="design-calc__headline">Стоимость вашего проекта</h2>
+                <p class="design-calc__sub">Рассчитайте онлайн — без звонков и переговоров</p>
+              </div>
+
+              <div class="design-calc__body">
+                <!-- Площадь -->
+                <div class="design-calc__area-row">
+                  <span class="design-calc__area-label">Укажите площадь дома</span>
+                  <input class="design-calc__area-input" type="number" id="calcArea" value="100" min="30" max="2000" step="5" aria-label="Площадь дома в м²"/>
+                  <span class="design-calc__area-unit">М²</span>
+                </div>
+
+                <!-- Документация -->
+                <div class="design-calc__docs-grid">
+                  <div>
+                    <p class="design-calc__docs-col-title">Основная документация</p>
+                    <div class="design-calc__docs-list">
+                      {['Привязка проекта к участку', 'План фундамента', 'Архитектурный раздел проекта', 'Эскизный проект инженерии'].map(item => (
+                        <div class="design-calc__doc-item">{item}</div>
+                      ))}
+                    </div>
+                    <div style="margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--c-stone)">
+                      <div class="design-calc__pricing-row">
+                        <span class="design-calc__pricing-label">Стоимость основной документации</span>
+                        <span class="design-calc__pricing-value" id="calcBasePrice">140 000 ₽</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="design-calc__docs-col-title">Дополнительные услуги</p>
+                    <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+                      {ADDONS.map(a => (
+                        <label class="form-checkbox">
+                          <input class="form-checkbox__input calc-addon" type="checkbox" data-addon={a.key}/>
+                          <span class="form-checkbox__label">
+                            {a.label} — <span class="form-checkbox__price">{a.price}</span>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    <div style="margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--c-stone)">
+                      <div class="design-calc__pricing-row">
+                        <span class="design-calc__pricing-label">Стоимость доп. услуг</span>
+                        <span class="design-calc__pricing-value" id="calcAddPrice">0 ₽</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Итог -->
+                <div class="design-calc__total">
+                  <span class="design-calc__total-label">Общая стоимость проектирования</span>
+                  <span class="design-calc__total-value" id="calcTotal">140 000 ₽</span>
+                </div>
+              </div>
+
+              <div class="design-calc__footer">
+                <button class="btn btn--accent btn--lg" data-modal-open="contactModal" type="button">
+                  Заказать проект
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <p style="font-size:var(--fs-xs);color:var(--c-text-60);max-width:300px;line-height:1.7">
+                  * Цены носят ориентировочный характер. Точная стоимость определяется после изучения ТЗ.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Сайдбар -->
+        <aside class="sticky-sidebar">
+          <div class="sidebar-cta-card">
+            <h3 class="sidebar-cta-card__title">Бесплатная консультация архитектора</h3>
+            <p class="sidebar-cta-card__text">Расскажем о возможностях, сроках и стоимости за 30 минут.</p>
+            <button class="btn btn--accent btn--block" data-modal-open="contactModal" type="button">Записаться</button>
+          </div>
+
+          <div style="background:var(--c-sand);border-radius:var(--radius-md);padding:var(--space-5)">
+            <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-text-60);margin-bottom:var(--space-4)">
+              Сроки выполнения
+            </p>
+            {TERMS.map(t => (
+              <div class="spec-row">
+                <span class="spec-row__label">{t.label}</span>
+                <span class="spec-row__value">{t.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style="background:var(--c-white);border:1px solid var(--c-stone);border-radius:var(--radius-md);padding:var(--space-5)">
+            <p style="font-size:var(--fs-sm);font-weight:500;color:var(--c-text);margin-bottom:var(--space-3)">Уже есть готовый проект?</p>
+            <p style="font-size:var(--fs-xs);color:var(--c-text-60);line-height:1.7;margin-bottom:var(--space-4)">
+              Возьмём ваш проект в работу — адаптируем под условия строительства в Ленобласти.
+            </p>
+            <button class="btn btn--outline btn--sm btn--block" data-modal-open="contactModal" type="button">Обсудить</button>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+</PageLayout>
+
+<script>
+  import '@scripts/calculators.ts';
+</script>

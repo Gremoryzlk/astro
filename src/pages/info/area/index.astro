@@ -1,0 +1,111 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Площадь дома: расчёты в проекте и в жизни"
+  description="Что такое площадь дома по осям, по наружным стенам и жилая площадь. Как считается площадь в нашем проекте."
+>
+
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Полезная информация</p>
+      <h1 class="page-header__title">Площадь дома:<br/>расчёты в проекте и в жизни</h1>
+    </div>
+  </div>
+
+  <section style="padding-block:var(--section-gap)">
+    <div class="container container--narrow">
+
+      <nav class="breadcrumb" style="margin-bottom:var(--space-8)" aria-label="Навигация">
+        <span class="breadcrumb__item"><a href="/">Главная</a></span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item"><a href="/projects/">Проекты</a></span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Площадь дома</span>
+      </nav>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-10)">
+
+        <p style="font-size:var(--fs-lg);color:var(--c-text-60);line-height:var(--lh-loose);border-left:3px solid var(--c-forest);padding-left:var(--space-5)" data-reveal>
+          Когда вы видите в нашем каталоге цифру «143 м²» — это площадь по осям несущих стен.
+          Давайте разберёмся, что это значит на практике.
+        </p>
+
+        <!-- Три типа площади -->
+        <div data-reveal>
+          <h2 style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-6)">
+            Три типа площади дома
+          </h2>
+          <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+            {[
+              {
+                title: '1. Площадь по осям несущих стен',
+                color: 'var(--c-forest)',
+                text:  'Именно эту площадь мы указываем в каталоге. Она измеряется от центра одной несущей стены до центра другой. Это стандарт архитектурного проектирования — он позволяет точно рассчитать несущие конструкции.',
+                note:  'Примерно на 5–8% больше, чем площадь по внутреннему обмеру.',
+              },
+              {
+                title: '2. Общая площадь (по БТИ)',
+                color: 'var(--c-stone)',
+                text:  'Сумма площадей всех помещений, измеренная по внутренним стенам. Именно эту цифру вносят в технический паспорт и свидетельство о собственности.',
+                note:  '',
+              },
+              {
+                title: '3. Жилая площадь',
+                color: 'var(--c-stone)',
+                text:  'Площадь только жилых комнат — спален, гостиных. Санузлы, кухня, коридоры, кладовые в это значение не входят.',
+                note:  '',
+              },
+            ].map(item => (
+              <div style={`background:var(--c-sand);border-radius:var(--radius-md);padding:var(--space-6);border-left:4px solid ${item.color}`}>
+                <h3 style="font-family:var(--ff-display);font-size:var(--fs-xl);font-weight:400;color:var(--c-text);margin-bottom:var(--space-3)">{item.title}</h3>
+                <p style="font-size:var(--fs-base);color:var(--c-text-60);line-height:var(--lh-loose)">{item.text}</p>
+                {item.note && (
+                  <p style="font-size:var(--fs-sm);color:var(--c-forest);font-weight:500;margin-top:var(--space-3)">{item.note}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Таблица пример -->
+        <div data-reveal>
+          <h2 style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-6)">
+            Пример: проект ТК-2 (143 м²)
+          </h2>
+          <div style="background:var(--c-white);border:1px solid var(--c-stone);border-radius:var(--radius-md);overflow:hidden">
+            {[
+              { type: 'По осям',       value: '143 м²',  includes: 'Все этажи по осям стен',   hl: true },
+              { type: 'Общая (БТИ)',   value: '~132 м²', includes: 'По внутреннему обмеру',     hl: false },
+              { type: 'Жилая',         value: '~78 м²',  includes: 'Только жилые комнаты',      hl: false },
+            ].map((row, i) => (
+              <div style={`display:grid;grid-template-columns:1fr 1fr 1fr;${i < 2 ? 'border-bottom:1px solid var(--c-stone)' : ''}`}>
+                <div style={`padding:var(--space-4);font-size:var(--fs-sm);color:var(--c-text);font-weight:500${i === 0 ? ';background:var(--c-sand)' : ''}`}>{row.type}</div>
+                <div style={`padding:var(--space-4);font-family:var(--ff-display);font-size:var(--fs-lg);font-weight:300;${row.hl ? 'color:var(--c-forest)' : 'color:var(--c-text)'};border-left:1px solid var(--c-stone)${i === 0 ? ';background:var(--c-sand)' : ''}`}>{row.value}</div>
+                <div style={`padding:var(--space-4);font-size:var(--fs-sm);color:var(--c-text-60);border-left:1px solid var(--c-stone)${i === 0 ? ';background:var(--c-sand)' : ''}`}>{row.includes}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div data-reveal>
+          <p style="font-size:var(--fs-base);color:var(--c-text-60);margin-bottom:var(--space-6)">
+            Хотите узнать точную площадь конкретного проекта? Запросите полные планировки у нашего менеджера.
+          </p>
+          <div style="display:flex;gap:var(--space-4);flex-wrap:wrap">
+            <button class="btn btn--primary" data-modal-open="contactModal" type="button">
+              Запросить планировки
+            </button>
+            <a href="javascript:history.back()" class="btn-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+              Вернуться к проекту
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</PageLayout>

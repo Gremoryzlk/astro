@@ -1,0 +1,180 @@
+---
+/**
+ * SiteHeader.astro
+ * Sticky header — nav с дропдаунами, телефон, CTA, burger для мобилки.
+ */
+import site from '@data/site.json';
+
+const NAV_ITEMS = [
+  {
+    label: 'Наши проекты',
+    href:  '/projects/',
+    children: [
+      { label: 'Все проекты',               href: '/projects/' },
+      { label: 'Сравнение проектов',         href: '/compare/' },
+    ],
+  },
+  {
+    label: 'Портфолио',
+    href:  '/portfolio/',
+    children: [
+      { label: 'Наши работы',               href: '/portfolio/' },
+      { label: 'Карта объектов',            href: '/portfolio/#map' },
+      { label: 'Фото этапов стройки',       href: '/portfolio/#stages' },
+    ],
+  },
+  {
+    label: 'Услуги',
+    href:  '/services/',
+    children: [
+      { label: 'Проектирование',            href: '/services/design/' },
+      { label: 'Фундамент под ключ',        href: '/services/foundation/' },
+      { label: 'Монтаж кровли',             href: '/services/roofing/' },
+      { label: 'Инженерные сети',           href: '/services/engineering/' },
+      { label: 'Отделка под ключ',          href: '/services/finishing/' },
+    ],
+  },
+  {
+    label: 'О компании',
+    href:  '/about/',
+    children: [
+      { label: 'О нас',       href: '/about/' },
+      { label: 'Контакты',    href: '/contacts/' },
+      { label: 'Вакансии',    href: '/about/#vacancies' },
+      { label: 'Отзывы',      href: '/about/#reviews' },
+    ],
+  },
+  {
+    label: 'Ипотека',
+    href:  '/mortgage/',
+    children: null,
+  },
+] as const;
+
+const currentPath = Astro.url.pathname;
+
+/** Активна ли ссылка с учётом вложенных страниц */
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header" id="siteHeader" role="banner">
+  <div class="container">
+    <div class="site-header__inner">
+
+      <!-- Логотип -->
+      <a href="/" class="site-logo" aria-label={`${site.company.name} — на главную`}>
+        <div class="site-logo__mark">
+          <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="rgba(255,255,255,.8)"/>
+            <polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="site-logo__text">
+          <span class="site-logo__name">{site.company.name}</span>
+          <span class="site-logo__tagline">{site.company.tagline}</span>
+        </div>
+      </a>
+
+      <!-- Десктоп-навигация -->
+      <nav class="site-nav" role="navigation" aria-label="Основная навигация">
+        {NAV_ITEMS.map(item => (
+          <div class:list={['site-nav__item', { 'site-nav__item--has-children': item.children }]}>
+            <a
+              href={item.href}
+              class:list={['site-nav__link', { 'is-active': isActive(item.href) }]}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+              {item.children && (
+                <svg class="site-nav__arrow" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              )}
+            </a>
+
+            {item.children && (
+              <div class="site-nav__dropdown" role="menu">
+                {item.children.map(child => (
+                  <a href={child.href} class="site-nav__dropdown-link" role="menuitem">
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </nav>
+
+      <!-- Правая часть шапки -->
+      <div class="site-header__actions">
+        <a href={`tel:${site.company.phone}`} class="site-header__phone">
+          {site.company.phoneFormatted}
+        </a>
+        <button
+          class="btn btn--accent btn--sm hide-mobile"
+          data-modal-open="contactModal"
+          type="button"
+        >
+          Оставить заявку
+        </button>
+        <button
+          class="burger"
+          aria-label="Открыть меню"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+          type="button"
+        >
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Мобильное меню -->
+<div
+  class="mobile-menu"
+  id="mobileMenu"
+  role="dialog"
+  aria-label="Меню навигации"
+  aria-modal="true"
+>
+  <nav class="mobile-menu__nav">
+    {NAV_ITEMS.map(item => (
+      <>
+        <a
+          href={item.href}
+          class:list={['mobile-menu__link', { 'is-active': isActive(item.href) }]}
+        >
+          {item.label}
+        </a>
+        {item.children && (
+          <div class="mobile-menu__section">
+            {item.children.slice(1).map(child => (
+              <a href={child.href} class="mobile-menu__sub-link">{child.label}</a>
+            ))}
+          </div>
+        )}
+      </>
+    ))}
+  </nav>
+
+  <div class="mobile-menu__footer">
+    <a href={`tel:${site.company.phone}`} class="mobile-menu__footer-phone">
+      {site.company.phoneFormatted}
+    </a>
+    <button
+      class="btn btn--accent btn--block"
+      data-modal-open="contactModal"
+      type="button"
+    >
+      Оставить заявку
+    </button>
+  </div>
+</div>

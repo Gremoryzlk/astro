@@ -1,0 +1,120 @@
+---
+/**
+ * pages/compare/index.astro — Сравнение проектов
+ *
+ * Таблица строится клиентским JS (scripts/compare.ts) из sessionStorage
+ * и window.__PROJECTS__ (данные сериализованы в <script> ниже).
+ */
+import PageLayout from '@layouts/PageLayout.astro';
+import { getAllProjects, formatPrice } from '@lib/getProjects';
+
+const projects = await getAllProjects();
+
+// Сериализуем минимальный набор для клиентского сравнения
+const projectsData = projects.map(p => ({
+  id:         p.slug,
+  slug:       p.slug,
+  name:       p.name,
+  area:       p.area,
+  floors:     p.floors,
+  rooms:      p.rooms,
+  baths:      p.baths,
+  price:      p.price,
+  priceLabel: formatPrice(p.price),
+  material:   p.material,
+  image:      p.image,
+  url:        `/projects/${p.slug}/`,
+}));
+---
+
+<PageLayout
+  title="Сравнение проектов"
+  description="Сравните до 4 проектов домов по площади, этажности, цене и характеристикам."
+>
+
+  <!-- Данные для клиентского JS -->
+  <script is:inline define:vars={{ projectsData }}>
+    window.__PROJECTS__ = projectsData;
+  </script>
+
+  <!-- Шапка страницы -->
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Инструмент выбора</p>
+      <h1 class="page-header__title">Сравнение проектов</h1>
+      <p class="page-header__subtitle">Добавьте до 4 проектов и сравните характеристики.</p>
+    </div>
+  </div>
+
+  <section class="compare-page">
+    <div class="container">
+
+      <div class="compare-page__header">
+        <h2 class="compare-page__title" id="comparePageTitle">Мои проекты</h2>
+        <div class="compare-page__actions">
+          <span class="compare-page__hint" id="compareHint">Выберите проекты для сравнения</span>
+          <a href="/projects/" class="btn btn--outline btn--sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Добавить проект
+          </a>
+          <button class="btn btn--ghost btn--sm" id="clearCompare" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            Очистить
+          </button>
+        </div>
+      </div>
+
+      <!-- Пустое состояние -->
+      <div id="compareEmpty" style="text-align:center;padding:var(--space-20) var(--gutter)">
+        <div style="font-size:4rem;margin-bottom:var(--space-5);opacity:.2" aria-hidden="true">📋</div>
+        <h3 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;color:var(--c-text);margin-bottom:var(--space-3)">
+          Нет проектов для сравнения
+        </h3>
+        <p style="font-size:var(--fs-sm);color:var(--c-text-60);margin-bottom:var(--space-8)">
+          Нажимайте на иконку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" style="vertical-align:middle"><rect x="3" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="17" y="5" width="4" height="16"/></svg>
+          на карточке проекта.
+        </p>
+        <a href="/projects/" class="btn btn--primary btn--xl">Перейти к проектам</a>
+      </div>
+
+      <!-- Таблица сравнения (заполняется JS) -->
+      <div id="compareTable" style="display:none">
+        <div class="compare-table-wrap">
+          <div class="compare-table">
+            <div class="compare-table__head" id="compareHead"></div>
+            <div class="compare-table__body" id="compareBody"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:var(--space-4);margin-top:var(--space-10)">
+          <a href="/projects/" class="btn btn--outline btn--lg">Добавить ещё проект</a>
+          <button class="btn btn--accent btn--lg" data-modal-open="contactModal" type="button">
+            Проконсультироваться
+          </button>
+        </div>
+      </div>
+
+      <!-- Каталог для выбора (показывается в пустом состоянии) -->
+      <div id="compareCatalog" style="margin-top:var(--space-12);display:none">
+        <h3 style="font-family:var(--ff-display);font-size:var(--fs-2xl);font-weight:300;margin-bottom:var(--space-6)">
+          Выберите проекты для сравнения
+        </h3>
+        <div class="projects-grid" id="compareCatalogGrid"></div>
+      </div>
+
+    </div>
+  </section>
+
+</PageLayout>
+
+<script>
+  import '@scripts/compare.ts';
+</script>
+<script is:inline>
+// Инициализация страницы сравнения из sessionStorage
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof window.initComparePage === 'function') {
+    window.initComparePage();
+  }
+});
+</script>

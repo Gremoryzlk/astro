@@ -1,0 +1,148 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+import site from '@data/site.json';
+
+const VALUES = [
+  { num: '01', title: 'Прозрачные цены',    text: 'Фиксируем стоимость строительства в договоре до начала работ. Никаких дополнительных расходов без вашего согласия.' },
+  { num: '02', title: 'Фиксированные сроки', text: 'Указываем точные даты в договоре и несём финансовую ответственность за их соблюдение.' },
+  { num: '03', title: `Гарантия ${site.stats.warrantyYears} лет`, text: 'Официальная гарантия на конструктивные элементы дома. Оперативно устраняем любые замечания.' },
+] as const;
+
+const REVIEWS = [
+  { text: 'Строили дом в Гатчинском районе. Всё чётко по договору — ни дня просрочки. Качество кладки проверял сам, всё на уровне. Рекомендую.', name: 'Александр П.', meta: 'Дом 142 м² · Газобетон · 2023' },
+  { text: 'Спасибо команде за терпение и профессионализм. Мы несколько раз меняли планировку, и каждый раз шли навстречу. Итоговый результат превзошёл ожидания.', name: 'Марина и Дмитрий К.', meta: 'Дом 198 м² · Кирпич · 2024' },
+  { text: 'Обратились после долгих поисков. Менеджер грамотно объяснил разницу между материалами, помог выбрать проект под наш бюджет. Сейчас живём и не нарадуемся.', name: 'Сергей В.', meta: 'Дом 120 м² · Газобетон · 2024' },
+] as const;
+
+const VACANCIES = [
+  { title: 'Прораб / Ответственный производитель работ', location: 'Ленинградская область', type: 'Полная занятость', tag: 'Строительство', desc: 'Опыт строительства загородных домов от 3 лет. Знание технологий строительства из газобетона и кирпича. Умение читать рабочую документацию.' },
+  { title: 'Менеджер по продажам (строительство)', location: 'Санкт-Петербург / удалённо', type: 'Полная занятость', tag: 'Продажи', desc: 'Опыт в продажах строительных услуг или недвижимости. Грамотная устная и письменная речь. Ориентация на результат.' },
+] as const;
+---
+
+<PageLayout title="О компании" description="Строительная компания Часть Души — более 14 лет строим загородные дома в Ленинградской области.">
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="container">
+      <div class="about-hero__grid">
+        <div>
+          <p class="about-hero__eyebrow">С {site.company.foundedYear} года</p>
+          <h1 class="about-hero__title">Строим дома,<br/>в которых живут люди</h1>
+          <p class="about-hero__text">
+            Часть Души — строительная компания полного цикла. Проектируем,
+            строим и сдаём загородные дома под ключ в Ленинградской области.
+            За {site.stats.yearsOnMarket} лет построили более {site.stats.builtHomes} домов.
+          </p>
+        </div>
+        <div class="about-hero__image-wrap" data-reveal>
+          <div class="about-hero__image" style="background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))"></div>
+          <span class="about-hero__image-caption">Объект в Вырицах, 2024</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Статистика -->
+  <div style="background:var(--c-sand);padding-block:var(--space-10)">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-8);text-align:center">
+        {[
+          { num: site.stats.builtHomes,          label: 'Построенных домов',    suffix: '+' },
+          { num: site.stats.yearsOnMarket,        label: 'Лет на рынке',         suffix: '' },
+          { num: site.stats.projectsInCatalog,   label: 'Проектов в каталоге',  suffix: '' },
+          { num: site.stats.warrantyYears,        label: 'Лет гарантии',         suffix: '' },
+        ].map((s, i) => (
+          <div data-reveal data-reveal-delay={i}>
+            <div style="font-family:var(--ff-display);font-size:var(--fs-5xl);font-weight:300;color:var(--c-forest);letter-spacing:-0.03em;line-height:1">
+              <span data-counter={s.num}>{s.num}</span>{s.suffix}
+            </div>
+            <div style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-text-60);margin-top:var(--space-2)">
+              {s.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Ценности -->
+  <section class="about-values" aria-labelledby="valuesTitle">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <span class="section-header__eyebrow">Наши принципы</span>
+        <h2 class="section-header__title" id="valuesTitle">Почему выбирают нас</h2>
+      </div>
+      <div class="about-values__grid">
+        {VALUES.map((v, i) => (
+          <div class="value-card" data-reveal data-reveal-delay={i}>
+            <div class="value-card__number">{v.num}</div>
+            <h3 class="value-card__title">{v.title}</h3>
+            <p class="value-card__text">{v.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Отзывы -->
+  <section id="reviews" class="about-reviews" style="background:var(--c-sand)" aria-labelledby="reviewsTitle">
+    <div class="container">
+      <div class="section-header section-header--center" data-reveal>
+        <span class="section-header__eyebrow">Отзывы</span>
+        <h2 class="section-header__title" id="reviewsTitle">Что говорят наши клиенты</h2>
+      </div>
+      <div class="reviews-grid">
+        {REVIEWS.map((r, i) => (
+          <div class="review-card" data-reveal data-reveal-delay={i}>
+            <div class="review-card__quote" aria-hidden="true">"</div>
+            <p class="review-card__text">{r.text}</p>
+            <div class="review-card__footer">
+              <div class="review-card__avatar" aria-hidden="true"></div>
+              <div>
+                <div class="review-card__name">{r.name}</div>
+                <div class="review-card__meta">{r.meta}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Вакансии -->
+  <section id="vacancies" class="vacancies" aria-labelledby="vacanciesTitle">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <span class="section-header__eyebrow">Карьера</span>
+        <h2 class="section-header__title" id="vacanciesTitle">Вакансии</h2>
+        <p class="section-header__subtitle">Ищем профессионалов, разделяющих наши ценности.</p>
+      </div>
+      <div style="max-width:720px">
+        {VACANCIES.map((v, i) => (
+          <div class="vacancy-item" data-reveal data-reveal-delay={i}>
+            <div class="vacancy-item__header" role="button" tabindex="0" aria-expanded="false">
+              <div class="vacancy-item__info">
+                <span class="vacancy-item__title">{v.title}</span>
+                <span class="vacancy-item__meta">{v.type} · {v.location}</span>
+              </div>
+              <div class="vacancy-item__tags">
+                <span class="vacancy-tag">{v.tag}</span>
+              </div>
+              <div class="vacancy-item__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="vacancy-item__body">
+              <div class="vacancy-item__content">
+                <p>{v.desc}</p>
+                <button class="btn btn--primary btn--sm" data-modal-open="contactModal" type="button">Откликнуться</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</PageLayout>

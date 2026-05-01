@@ -1,0 +1,174 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+
+const SERVICES = [
+  {
+    slug: 'design',
+    title: 'Проектирование',
+    desc: 'Архитектурный проект, конструктив, инженерные разделы. Полный пакет документации. Индивидуальные проекты любой сложности.',
+    icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z',
+    highlights: ['Эскизный проект за 5–7 дней', 'Полный пакет рабочей документации', 'Онлайн-калькулятор стоимости'],
+  },
+  {
+    slug: 'foundation',
+    title: 'Фундамент под ключ',
+    desc: 'Монолитная плита, ленточный и свайно-ростверковый фундамент под любые грунты Ленинградской области.',
+    icon: 'M2 20h20M5 20V8l7-5 7 5v12',
+    highlights: ['Монолитная плита', 'Ленточный фундамент', 'Свайно-ростверковый'],
+  },
+  {
+    slug: 'roofing',
+    title: 'Монтаж кровли',
+    desc: 'Скатные, плоские и эксплуатируемые кровли. Работаем с любыми кровельными материалами.',
+    icon: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+    highlights: ['Металлочерепица, ПВХ-мембрана', 'Плоские эксплуатируемые', 'Гарантия на герметичность'],
+  },
+  {
+    slug: 'engineering',
+    title: 'Инженерные сети',
+    desc: 'Электрика, водоснабжение, канализация, отопление и вентиляция. Всё под ключ.',
+    icon: 'M22 12h-4l-3 9L9 3l-3 9H2',
+    highlights: ['Электрика 220/380В', 'Водоснабжение и канализация', 'Отопление и вентиляция'],
+  },
+  {
+    slug: 'finishing',
+    title: 'Отделка под ключ',
+    desc: 'Черновая, чистовая и дизайнерская отделка. Сдаём дом полностью готовым к заселению.',
+    icon: 'M3 3h18v18H3z',
+    highlights: ['Черновая и чистовая', 'Дизайнерская отделка', 'Сдача с мебелью'],
+  },
+] as const;
+---
+
+<PageLayout
+  title="Услуги"
+  description="Проектирование, строительство фундамента, монтаж кровли, инженерные сети, отделка под ключ в Ленинградской области."
+>
+
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Что мы делаем</p>
+      <h1 class="page-header__title">Полный цикл строительства</h1>
+      <p class="page-header__subtitle">
+        От проектирования до сдачи готового дома под ключ. Работаем в Ленинградской области с {new Date().getFullYear() - 14} года.
+      </p>
+    </div>
+  </div>
+
+  <section style="padding-block:var(--section-gap)">
+    <div class="container">
+      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+        {SERVICES.map((svc, i) => (
+          <a
+            href={`/services/${svc.slug}/`}
+            class="service-list-item"
+            data-reveal
+            data-reveal-delay={Math.min(i, 3)}
+          >
+            <div class="service-list-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24">
+                <path d={svc.icon}/>
+              </svg>
+            </div>
+            <div class="service-list-item__body">
+              <h2 class="service-list-item__title">{svc.title}</h2>
+              <p class="service-list-item__desc">{svc.desc}</p>
+              <ul class="service-list-item__highlights">
+                {svc.highlights.map(h => <li>{h}</li>)}
+              </ul>
+            </div>
+            <div class="service-list-item__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:var(--c-forest);padding-block:var(--section-gap)">
+    <div class="container" style="text-align:center">
+      <h2 style="font-family:var(--ff-display);font-size:var(--fs-3xl);font-weight:300;color:var(--c-white);letter-spacing:-0.02em;margin-bottom:var(--space-4)" data-reveal>
+        Нужен полный цикл строительства?
+      </h2>
+      <p style="font-size:var(--fs-md);color:rgba(255,255,255,.65);max-width:500px;margin:0 auto var(--space-8);line-height:1.8" data-reveal data-reveal-delay="1">
+        Возьмём ваш объект на полный цикл — от проекта до ключей. Единая ответственность, фиксированная цена.
+      </p>
+      <button class="btn btn--accent btn--xl" data-modal-open="contactModal" type="button" data-reveal data-reveal-delay="2">
+        Получить консультацию
+      </button>
+    </div>
+  </section>
+
+</PageLayout>
+
+<style is:global>
+  .service-list-item {
+    display: grid;
+    grid-template-columns: 64px 1fr 40px;
+    gap: var(--space-6);
+    align-items: center;
+    background: var(--c-white);
+    border: 1px solid var(--c-stone);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    text-decoration: none;
+    transition: box-shadow var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  }
+  .service-list-item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+  .service-list-item__icon {
+    width: 64px; height: 64px;
+    background: var(--c-forest-10);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .service-list-item__icon svg { stroke: var(--c-forest); }
+  .service-list-item__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-light);
+    color: var(--c-text);
+    letter-spacing: var(--ls-tight);
+    margin-bottom: var(--space-2);
+  }
+  .service-list-item__desc {
+    font-size: var(--fs-sm);
+    color: var(--c-text-60);
+    line-height: var(--lh-loose);
+    margin-bottom: var(--space-3);
+  }
+  .service-list-item__highlights {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    list-style: none;
+  }
+  .service-list-item__highlights li {
+    font-size: 11px;
+    font-weight: var(--fw-medium);
+    color: var(--c-forest);
+    background: var(--c-forest-10);
+    padding: 2px 10px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.03em;
+  }
+  .service-list-item__arrow {
+    color: var(--c-text-60);
+    transition: color var(--dur-fast), transform var(--dur-base) var(--ease-out);
+    flex-shrink: 0;
+  }
+  .service-list-item:hover .service-list-item__arrow {
+    color: var(--c-forest);
+    transform: translateX(4px);
+  }
+  @media (max-width: 640px) {
+    .service-list-item { grid-template-columns: 48px 1fr; }
+    .service-list-item__arrow { display: none; }
+    .service-list-item__icon { width: 48px; height: 48px; }
+  }
+</style>

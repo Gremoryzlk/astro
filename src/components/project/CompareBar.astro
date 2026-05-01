@@ -1,0 +1,32 @@
+---
+/**
+ * CompareBar.astro
+ * Sticky-полоска внизу экрана для сравнения проектов.
+ * Состояние (какие проекты добавлены) хранится в sessionStorage
+ * и управляется scripts/compare.ts.
+ */
+---
+
+<div
+  class="compare-bar"
+  id="compareBar"
+  role="region"
+  aria-label="Сравнение проектов"
+  aria-live="polite"
+>
+  <div class="container">
+    <div class="compare-bar__inner">
+      <div class="compare-bar__items" id="compareBarItems"></div>
+      <div class="compare-bar__slots" id="compareBarSlots"></div>
+      <div class="compare-bar__actions">
+        <span class="compare-bar__count" id="compareBarCount"></span>
+        <button class="btn btn--outline-white btn--sm compare-bar__clear" id="compareBarClear" type="button">
+          Очистить
+        </button>
+        <button class="btn btn--primary btn--sm compare-bar__go" id="compareBarGo" type="button">
+          Сравнить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

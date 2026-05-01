@@ -1,0 +1,140 @@
+/* ── BUTTONS ─────────────────────────────────── */
+
+/* Base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.75em 1.75em;
+  font-family: var(--ff-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast),
+              border-color var(--dur-fast), box-shadow var(--dur-fast),
+              transform var(--dur-fast);
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  user-select: none;
+}
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* Primary — forest green */
+.btn--primary {
+  background: var(--c-forest);
+  color: var(--c-white);
+  border-color: var(--c-forest);
+}
+.btn--primary:hover {
+  background: #0a2d22;
+  border-color: #0a2d22;
+  box-shadow: 0 4px 16px rgba(15,61,46,0.25);
+}
+
+/* Accent — bordeaux, urgency only */
+.btn--accent {
+  background: var(--c-accent);
+  color: var(--c-white);
+  border-color: var(--c-accent);
+}
+.btn--accent:hover {
+  background: #5c2219;
+  border-color: #5c2219;
+  box-shadow: 0 4px 16px rgba(110,42,31,0.3);
+}
+
+/* Outline forest */
+.btn--outline {
+  background: transparent;
+  color: var(--c-forest);
+  border-color: var(--c-forest);
+}
+.btn--outline:hover {
+  background: var(--c-forest);
+  color: var(--c-white);
+}
+
+/* Outline on dark */
+.btn--outline-white {
+  background: transparent;
+  color: var(--c-white);
+  border-color: rgba(255,255,255,0.5);
+}
+.btn--outline-white:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--c-white);
+}
+
+/* Ghost */
+.btn--ghost {
+  background: transparent;
+  color: var(--c-text);
+  border-color: transparent;
+  padding-inline: var(--space-2);
+}
+.btn--ghost:hover { background: var(--c-forest-10); color: var(--c-forest); }
+
+/* Sizes */
+.btn--sm { padding: 0.5em 1.2em; font-size: var(--fs-xs); }
+.btn--lg { padding: 1em 2.2em; font-size: var(--fs-base); }
+.btn--xl { padding: 1.1em 2.5em; font-size: var(--fs-md); letter-spacing: var(--ls-wider); }
+
+/* Icon button */
+.btn--icon {
+  padding: 0.6em;
+  border-radius: var(--radius-sm);
+}
+.btn--icon svg { width: 18px; height: 18px; margin: 0; }
+
+/* Full width */
+.btn--block { width: 100%; }
+
+/* Loading state */
+.btn.is-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.btn.is-loading::after {
+  content: '';
+  width: 14px; height: 14px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-left: var(--space-2);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Link button */
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-forest);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--c-forest);
+  transition: gap var(--dur-base) var(--ease-out), opacity var(--dur-fast);
+}
+.btn-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+.btn-link:hover { gap: var(--space-3); opacity: 0.75; }
+.btn-link--white { color: var(--c-white); border-bottom-color: var(--c-white); }
+.btn-link--white { color: var(--c-white); border-bottom-color: var(--c-white); }
+
+/* ── MOBILE ─────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Prevent btn--xl from overflowing on narrow screens */
+  .btn--xl { padding: 0.9em 1.5em; font-size: var(--fs-sm); letter-spacing: var(--ls-wide); }
+  /* white-space on regular btns — allow text wrap if needed */
+  .btn--block { white-space: normal; }
+}

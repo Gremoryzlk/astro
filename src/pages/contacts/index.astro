@@ -1,0 +1,129 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+import site from '@data/site.json';
+---
+
+<PageLayout title="Контакты" description="Офис в Санкт-Петербурге. Телефон, адрес, режим работы, форма обратной связи.">
+
+  <div class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Связь с нами</p>
+      <h1 class="page-header__title">Контакты</h1>
+      <p class="page-header__subtitle">Ответим на все вопросы и поможем с выбором проекта.</p>
+    </div>
+  </div>
+
+  <section class="contacts-page">
+    <div class="container">
+      <div class="contacts-grid">
+
+        <!-- Контактная информация + форма -->
+        <div class="contacts-info">
+
+          <div class="contacts-item" data-reveal>
+            <span class="contacts-item__label">Телефон</span>
+            <a href={`tel:${site.company.phone}`} class="contacts-item__value">{site.company.phoneFormatted}</a>
+            <p style="font-size:var(--fs-xs);color:var(--c-text-60);margin-top:4px">Бесплатно по России</p>
+          </div>
+
+          <div class="contacts-item" data-reveal>
+            <span class="contacts-item__label">E-mail</span>
+            <a href={`mailto:${site.company.email}`} class="contacts-item__value">{site.company.email}</a>
+          </div>
+
+          <div class="contacts-item" data-reveal>
+            <span class="contacts-item__label">Адрес офиса</span>
+            <span class="contacts-item__value">{site.company.address}</span>
+          </div>
+
+          <div class="contacts-item" data-reveal>
+            <span class="contacts-item__label">Режим работы</span>
+            <span class="contacts-item__value">{site.company.workingHours}</span>
+          </div>
+
+          <div data-reveal>
+            <p style="font-size:var(--fs-xs);font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-text-60);margin-bottom:var(--space-3)">
+              Мессенджеры
+            </p>
+            <div style="display:flex;gap:var(--space-3)">
+              {site.socials.telegram && (
+                <a href={site.socials.telegram} class="btn btn--outline btn--sm" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                  Telegram
+                </a>
+              )}
+              {site.socials.vk && (
+                <a href={site.socials.vk} class="btn btn--outline btn--sm" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true"><path d="M21 2H3v20l4-4h14z"/></svg>
+                  ВКонтакте
+                </a>
+              )}
+            </div>
+          </div>
+
+          <!-- Форма обратного звонка -->
+          <div style="background:var(--c-sand);border-radius:var(--radius-md);padding:var(--space-6)" data-reveal>
+            <h3 style="font-family:var(--ff-display);font-size:var(--fs-xl);font-weight:300;letter-spacing:-0.02em;margin-bottom:var(--space-5)">
+              Заказать обратный звонок
+            </h3>
+
+            <div class="form-success" id="callbackSuccess" aria-live="polite">
+              <div class="form-success__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h4 class="form-success__title">Спасибо!</h4>
+              <p class="form-success__text">Перезвоним в течение 30 минут.</p>
+            </div>
+
+            <form class="form" data-form id="callbackForm" novalidate>
+              <div class="form-field">
+                <label class="form-label form-label--required" for="cbName">Имя</label>
+                <input class="form-input" type="text" id="cbName" name="name" placeholder="Ваше имя" required autocomplete="given-name"/>
+              </div>
+              <div class="form-field">
+                <label class="form-label form-label--required" for="cbPhone">Телефон</label>
+                <input class="form-input" type="tel" id="cbPhone" name="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel"/>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="cbTime">Удобное время звонка</label>
+                <select class="form-select" id="cbTime" name="time">
+                  <option value="">Любое время</option>
+                  <option value="morning">Утром (9:00–12:00)</option>
+                  <option value="afternoon">Днём (12:00–15:00)</option>
+                  <option value="evening">Вечером (15:00–18:00)</option>
+                </select>
+              </div>
+              <label class="form-checkbox">
+                <input class="form-checkbox__input" type="checkbox" name="consent" required/>
+                <span class="form-checkbox__label">
+                  Согласен с <a href="/privacy/">политикой конфиденциальности</a>
+                </span>
+              </label>
+              <button class="btn btn--primary btn--block" type="submit">Перезвоните мне</button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Карта -->
+        <div data-reveal>
+          <div class="contacts-map">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=30.1,59.9,30.4,60.0&layer=mapnik&marker=59.95,30.25"
+              title="Местоположение офиса на карте"
+              loading="lazy"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div style="margin-top:var(--space-4);padding:var(--space-4);background:var(--c-sand);border-radius:var(--radius-sm)">
+            <p style="font-size:var(--fs-sm);color:var(--c-text-60)">
+              <strong style="color:var(--c-text)">Как добраться:</strong> м. Московская, выход 2, далее 5 минут пешком.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</PageLayout>

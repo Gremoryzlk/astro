@@ -1,0 +1,138 @@
+---
+/**
+ * ProjectCard.astro
+ * Карточка проекта в каталоге.
+ * Все данные приходят из одного объекта Project — никакого хардкода.
+ */
+import type { Project } from '@lib/types';
+import { formatPrice, isPromoActive, serializeProjectForFilter } from '@lib/getProjects';
+
+interface Props {
+  project:    Project;
+  /** Индекс для задержки анимации появления */
+  index?:     number;
+  /** Показывать кнопку сравнения */
+  showCompare?: boolean;
+}
+
+const { project: p, index = 0, showCompare = true } = Astro.props;
+
+const promoActive = isPromoActive(p.promo);
+const filterData  = serializeProjectForFilter(p);
+const delay       = Math.min(index % 3, 4) as 0 | 1 | 2 | 3 | 4;
+
+const hasImage = p.image && !p.image.includes('placeholder');
+---
+
+<article
+  class="project-card"
+  data-project
+  data-floors={filterData.floors}
+  data-area={filterData.area}
+  data-price={filterData.price}
+  data-rooms={filterData.rooms}
+  data-baths={filterData.baths}
+  data-date={filterData.date}
+  data-material={filterData.material}
+  data-promo-active={filterData.promoActive}
+  data-reveal
+  data-reveal-delay={delay}
+  onclick={`location.href='/projects/${p.slug}/'`}
+  role="button"
+  tabindex="0"
+  aria-label={`Открыть проект ${p.name}`}
+>
+  <!-- Изображение -->
+  <div class="project-card__image-wrap">
+    {hasImage ? (
+      <img
+        class="project-card__image"
+        src={p.image}
+        alt={`Рендер проекта ${p.name}`}
+        loading="lazy"
+        decoding="async"
+        width="480"
+        height="360"
+      />
+    ) : (
+      <div class="project-card__image-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+    )}
+
+    <!-- Бейджи -->
+    <div class="project-card__badges">
+      {p.badge === 'new' && (
+        <span class="badge badge--new">⚡ Новый</span>
+      )}
+      {p.badge === 'promo' && promoActive && (
+        <span class="badge badge--promo">Акция</span>
+      )}
+      <span class="badge badge--floors">{p.floors} {p.floors === 1 ? 'этаж' : 'этажа'}</span>
+    </div>
+
+    <!-- Кнопка сравнения -->
+    {showCompare && (
+      <button
+        class="project-card__compare-btn"
+        data-compare-id={p.slug}
+        data-compare-name={p.name}
+        onclick="event.stopPropagation()"
+        aria-label="Добавить к сравнению"
+        type="button"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" aria-hidden="true">
+          <rect x="3" y="3" width="4" height="18"/>
+          <rect x="10" y="8" width="4" height="13"/>
+          <rect x="17" y="5" width="4" height="16"/>
+        </svg>
+      </button>
+    )}
+  </div>
+
+  <!-- Тело карточки -->
+  <div class="project-card__body">
+    <h3 class="project-card__name">{p.name}</h3>
+    <div class="project-card__meta">
+      <span class="project-card__meta-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" aria-hidden="true">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        {p.area} м²
+      </span>
+      <span class="project-card__meta-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" aria-hidden="true">
+          <path d="M3 7h18M3 12h18M3 17h18"/>
+        </svg>
+        {p.rooms} {p.rooms === 1 ? 'комната' : p.rooms < 5 ? 'комнаты' : 'комнат'}
+      </span>
+      <span class="project-card__meta-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" aria-hidden="true">
+          <path d="M4 12h16M4 6h7M4 18h16"/>
+        </svg>
+        {p.baths} {p.baths === 1 ? 'санузел' : 'санузла'}
+      </span>
+    </div>
+  </div>
+
+  <!-- Футер карточки: цена + кнопка -->
+  <div class="project-card__footer">
+    <div class="project-card__price">
+      <span class="project-card__price-label">Стоимость</span>
+      <span class="project-card__price-value">{formatPrice(p.price)}</span>
+      {promoActive && p.promo && (
+        <span class="project-card__price-note">{p.promo.text}</span>
+      )}
+    </div>
+    <a
+      href={`/projects/${p.slug}/`}
+      class="btn btn--outline btn--sm"
+      onclick="event.stopPropagation()"
+    >
+      Открыть
+    </a>
+  </div>
+</article>

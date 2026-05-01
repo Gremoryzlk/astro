@@ -1,0 +1,156 @@
+---
+/**
+ * ProjectFilter.astro
+ * Панель фильтрации каталога проектов.
+ * Получает опции из getProjectFilterOptions() — никакого хардкода значений.
+ * Вся клиентская логика — в scripts/filter.ts.
+ */
+import { getProjectFilterOptions } from '@lib/getProjects';
+
+const opts = await getProjectFilterOptions();
+
+// Округляем priceMin/Max до ближайшего «красивого» миллиона
+const priceMin = Math.floor(opts.priceMin / 1_000_000) * 1_000_000;
+const priceMax = Math.ceil(opts.priceMax  / 1_000_000) * 1_000_000;
+
+// Метки для чипов этажности
+const floorLabels: Record<number, string> = {
+  1:   '1 этаж',
+  1.5: '1,5 этажа',
+  2:   '2 этажа',
+  3:   '3 этажа',
+};
+
+// Метки количества комнат
+const roomsOptions = Array.from({ length: opts.roomsMax - 1 }, (_, i) => i + 2); // 2..max
+---
+
+<div class="filter-panel" id="filterPanel" role="search" aria-label="Фильтр проектов">
+  <div class="filter-rows">
+
+    <!-- Строка 1: Этажность + Комнаты + Санузлы -->
+    <div class="filter-row">
+
+      <div class="filter-group" data-filter-group="floors">
+        <span class="filter-group__label">Этажность</span>
+        <div class="filter-chips" role="group" aria-label="Фильтр по этажности">
+          <button class="filter-chip is-active" data-value="all" type="button">Все</button>
+          {opts.floors.map(f => (
+            <button class="filter-chip" data-value={String(f)} type="button">
+              {floorLabels[f] ?? `${f} эт.`}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group" data-filter-group="rooms">
+        <span class="filter-group__label">Жилые комнаты</span>
+        <div class="filter-chips" role="group" aria-label="Фильтр по количеству комнат">
+          <button class="filter-chip is-active" data-value="all" type="button">Все</button>
+          {roomsOptions.map(r => (
+            <button class="filter-chip" data-value={String(r)} type="button">{r}</button>
+          ))}
+          {opts.roomsMax >= 5 && (
+            <button class="filter-chip" data-value="5+" type="button">5+</button>
+          )}
+        </div>
+      </div>
+
+      <div class="filter-group" data-filter-group="baths">
+        <span class="filter-group__label">Санузлы</span>
+        <div class="filter-chips" role="group" aria-label="Фильтр по санузлам">
+          <button class="filter-chip is-active" data-value="all" type="button">Все</button>
+          {Array.from({ length: opts.bathsMax }, (_, i) => i + 1).map(b => (
+            <button class="filter-chip" data-value={String(b)} type="button">{b}</button>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Строка 2: Площадь + Цена -->
+    <div class="filter-row">
+
+      <div class="filter-group">
+        <span class="filter-group__label">Площадь, м²</span>
+        <div class="filter-range">
+          <div class="filter-range__track">
+            <div class="filter-range__fill" id="areaFill" style="left:0;right:0"></div>
+            <div class="filter-range__inputs">
+              <input
+                class="filter-range__input"
+                type="range"
+                id="areaMin"
+                min={opts.areaMin}
+                max={opts.areaMax}
+                value={opts.areaMin}
+                step="5"
+                aria-label="Минимальная площадь"
+              />
+              <input
+                class="filter-range__input"
+                type="range"
+                id="areaMax"
+                min={opts.areaMin}
+                max={opts.areaMax}
+                value={opts.areaMax}
+                step="5"
+                aria-label="Максимальная площадь"
+              />
+            </div>
+          </div>
+          <div class="filter-range__values">
+            <span>от <strong id="areaMinLabel">{opts.areaMin}</strong> м²</span>
+            <span>до <strong id="areaMaxLabel">{opts.areaMax}</strong> м²</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-group__label">Стоимость, млн ₽</span>
+        <div class="filter-range">
+          <div class="filter-range__track">
+            <div class="filter-range__fill" id="priceFill" style="left:0;right:0"></div>
+            <div class="filter-range__inputs">
+              <input
+                class="filter-range__input"
+                type="range"
+                id="priceMin"
+                min={priceMin}
+                max={priceMax}
+                value={priceMin}
+                step="100000"
+                aria-label="Минимальная цена"
+              />
+              <input
+                class="filter-range__input"
+                type="range"
+                id="priceMax"
+                min={priceMin}
+                max={priceMax}
+                value={priceMax}
+                step="100000"
+                aria-label="Максимальная цена"
+              />
+            </div>
+          </div>
+          <div class="filter-range__values">
+            <span>от <strong id="priceMinLabel">{Math.round(priceMin / 1_000_000)}</strong> млн</span>
+            <span>до <strong id="priceMaxLabel">{Math.round(priceMax / 1_000_000)}</strong> млн</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Сброс -->
+  <div class="filter-actions">
+    <button class="filter-clear" id="filterClear" type="button" aria-label="Сбросить все фильтры">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+      Сбросить фильтр
+    </button>
+  </div>
+</div>

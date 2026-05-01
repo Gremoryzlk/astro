@@ -1,0 +1,337 @@
+/* =============================================
+   ЧАСТЬ ДУШИ — DESIGN SYSTEM
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
+
+:root {
+  /* ── BRAND COLOURS ─────────────────────────── */
+  --c-bg:        #F6F6F4;   /* 60% — main background    */
+  --c-forest:    #0F3D2E;   /* 20% — header, footer, CTAs */
+  --c-sand:      #E9E7E3;   /* 10% — section alternates  */
+  --c-text:      #2B2F2D;   /* 5%  — all body copy       */
+  --c-stone:     #D7D2CB;   /* 5%  — cards, borders      */
+  --c-accent:    #6E2A1F;   /* 5%  — CTA, urgency only   */
+
+  /* ── DERIVED ───────────────────────────────── */
+  --c-forest-80: rgba(15,61,46,0.8);
+  --c-forest-10: rgba(15,61,46,0.07);
+  --c-text-60:   rgba(43,47,45,0.6);
+  --c-text-30:   rgba(43,47,45,0.3);
+  --c-accent-10: rgba(110,42,31,0.1);
+  --c-white:     #FFFFFF;
+
+  /* ── TYPOGRAPHY ─────────────────────────────  */
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-body:    'Jost', system-ui, sans-serif;
+
+  --fs-xs:   clamp(0.7rem,  1.2vw, 0.75rem);
+  --fs-sm:   clamp(0.8rem,  1.4vw, 0.875rem);
+  --fs-base: clamp(0.9rem,  1.6vw, 1rem);
+  --fs-md:   clamp(1rem,    1.8vw, 1.125rem);
+  --fs-lg:   clamp(1.1rem,  2vw,   1.25rem);
+  --fs-xl:   clamp(1.3rem,  2.5vw, 1.5rem);
+  --fs-2xl:  clamp(1.6rem,  3vw,   2rem);
+  --fs-3xl:  clamp(2rem,    4vw,   2.75rem);
+  --fs-4xl:  clamp(2.5rem,  5.5vw, 3.75rem);
+  --fs-5xl:  clamp(3rem,    7vw,   5rem);
+
+  --fw-light:   300;
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+
+  --lh-tight:  1.15;
+  --lh-snug:   1.3;
+  --lh-normal: 1.6;
+  --lh-loose:  1.8;
+
+  --ls-tight:  -0.02em;
+  --ls-normal:  0;
+  --ls-wide:    0.05em;
+  --ls-wider:   0.12em;
+  --ls-widest:  0.2em;
+
+  /* ── SPACING ────────────────────────────────  */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-5:   1.25rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-20:  5rem;
+  --space-24:  6rem;
+  --space-32:  8rem;
+
+  --section-gap: clamp(4rem, 8vw, 8rem);
+
+  /* ── LAYOUT ──────────────────────────────── */
+  --container:      1280px;
+  --container-wide: 1440px;
+  --container-narrow: 860px;
+  --gutter:   clamp(1rem, 4vw, 2rem);
+
+  /* ── BORDERS & RADIUS ───────────────────── */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  20px;
+  --radius-pill: 999px;
+
+  /* ── SHADOWS ─────────────────────────────── */
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+  --shadow-xl: 0 24px 64px rgba(0,0,0,0.12);
+
+  /* ── TRANSITIONS ─────────────────────────── */
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:   cubic-bezier(0.5, 0, 1, 0);
+  --ease-io:   cubic-bezier(0.83, 0, 0.17, 1);
+
+  --dur-fast:   150ms;
+  --dur-base:   280ms;
+  --dur-slow:   450ms;
+  --dur-slower: 700ms;
+
+  /* ── HEADER ──────────────────────────────── */
+  --header-h: 72px;
+  --header-h-mobile: 60px;
+}
+
+/* ── BODY DEFAULTS ──────────────────────────── */
+html {
+  overflow-x: hidden; /* prevent horizontal scroll on mobile */
+}
+body {
+  font-family: var(--ff-body);
+  font-size:   var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color:       var(--c-text);
+  background:  var(--c-bg);
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  /* Prevent text inflation on iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── CONTAINER ──────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--wide {
+  max-width: var(--container-wide);
+}
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+/* ── TYPOGRAPHY ─────────────────────────────── */
+.t-display {
+  font-family: var(--ff-display);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+}
+.t-label {
+  font-family: var(--ff-body);
+  font-size:   var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+}
+
+/* ── SECTION HEADER ─────────────────────────── */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-12);
+}
+.section-header__eyebrow {
+  font-family: var(--ff-body);
+  font-size:   var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--c-forest);
+}
+.section-header__title {
+  font-family: var(--ff-display);
+  font-size:   var(--fs-4xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--ls-tight);
+  line-height:  var(--lh-tight);
+  color: var(--c-text);
+}
+.section-header__subtitle {
+  font-size:  var(--fs-md);
+  color:      var(--c-text-60);
+  max-width:  600px;
+  line-height: var(--lh-loose);
+}
+.section-header--center {
+  align-items: center;
+  text-align: center;
+}
+.section-header--center .section-header__subtitle {
+  margin-inline: auto;
+}
+
+/* ── DIVIDER ─────────────────────────────────── */
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--c-forest);
+  display: block;
+}
+
+/* ── BREADCRUMB ─────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--c-text-60);
+  flex-wrap: wrap;
+}
+.breadcrumb__item { display: flex; align-items: center; gap: var(--space-2); }
+.breadcrumb__item a:hover { color: var(--c-forest); }
+.breadcrumb__sep { color: var(--c-text-30); font-size: 0.7em; }
+.breadcrumb__item--active { color: var(--c-text); }
+
+/* ── SCROLL ANIMATIONS ──────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-slower) var(--ease-out),
+              transform var(--dur-slower) var(--ease-out);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal-delay="1"] { transition-delay: 100ms; }
+[data-reveal-delay="2"] { transition-delay: 200ms; }
+[data-reveal-delay="3"] { transition-delay: 300ms; }
+[data-reveal-delay="4"] { transition-delay: 400ms; }
+[data-reveal-delay="5"] { transition-delay: 500ms; }
+
+/* ── UTILITY ─────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+
+.text-forest  { color: var(--c-forest); }
+.text-accent  { color: var(--c-accent); }
+.text-muted   { color: var(--c-text-60); }
+
+.bg-forest  { background: var(--c-forest); }
+.bg-sand    { background: var(--c-sand); }
+.bg-stone   { background: var(--c-stone); }
+.bg-white   { background: var(--c-white); }
+
+.section-gap { padding-block: var(--section-gap); }
+
+/* ── ICON SIZE HELPERS ─────────────────────── */
+.icon-sm { width: 16px; height: 16px; }
+.icon-md { width: 20px; height: 20px; }
+.icon-lg { width: 24px; height: 24px; }
+
+/* ── SKELETON LOADER ─────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--c-stone) 25%, var(--c-sand) 50%, var(--c-stone) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeleton-wave {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── RESPONSIVE HELPERS ─────────────────── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}
+
+/* ── TOUCH & TAP IMPROVEMENTS ──────────────── */
+/* Remove tap highlight on iOS */
+a, button, [role="button"], [tabindex] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure tap targets are large enough (44px min per WCAG) */
+.burger, .modal__close, .lightbox__close,
+.project-slider__prev, .project-slider__next,
+.lightbox__prev, .lightbox__next {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Smooth momentum scrolling on iOS */
+.anchor-nav__inner,
+.compare-table-wrap,
+.sort-bar__controls,
+.mobile-menu {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent long-press context menu on images used as interactive elements */
+.portfolio-card__image,
+.project-slider__slide img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Focus-visible for keyboard users only */
+:focus-visible {
+  outline: 2px solid var(--c-forest);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── PRINT BASICS ────────────────────────────── */
+@media print {
+  .site-header, .site-footer, .compare-bar,
+  .portfolio-excursion, .anchor-nav { display: none !important; }
+  body { background: white; color: black; }
+}
+
+/* ── SECTION HEADER ROW VARIANT ─────────────── */
+/* Use when eyebrow+title+subtitle is left and a CTA/link is right */
+.section-header--row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+@media (max-width: 640px) {
+  .section-header--row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .section-header { margin-bottom: var(--space-8); }
+}

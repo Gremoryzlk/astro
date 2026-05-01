@@ -1,0 +1,99 @@
+---
+/**
+ * ContactModal.astro
+ * Модальное окно заявки — присутствует на всех страницах через PageLayout.
+ * Открывается кнопкой с data-modal-open="contactModal".
+ */
+---
+
+<div
+  class="modal-overlay contact-modal"
+  id="contactModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="contactModalTitle"
+>
+  <div class="modal">
+    <div class="modal__header">
+      <h2 class="modal__title t-display" id="contactModalTitle">Оставить заявку</h2>
+      <button class="modal__close" aria-label="Закрыть" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal__body">
+
+      <!-- Success state -->
+      <div class="form-success" id="contactSuccess" aria-live="polite">
+        <div class="form-success__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3 class="form-success__title">Заявка отправлена!</h3>
+        <p class="form-success__text">Мы свяжемся с вами в течение рабочего дня.</p>
+        <button
+          class="btn btn--outline"
+          onclick="window.closeModal('contactModal')"
+          type="button"
+        >
+          Закрыть
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form class="form" data-form id="contactForm" novalidate>
+        <p class="form-hint">
+          Оставьте контакты — менеджер перезвонит и ответит на все вопросы.
+        </p>
+        <div class="contact-modal__grid">
+          <div class="form-field">
+            <label class="form-label form-label--required" for="contactName">Имя</label>
+            <input
+              class="form-input"
+              type="text"
+              id="contactName"
+              name="name"
+              placeholder="Александр"
+              required
+              autocomplete="given-name"
+            />
+          </div>
+          <div class="form-field">
+            <label class="form-label form-label--required" for="contactPhone">Телефон</label>
+            <input
+              class="form-input"
+              type="tel"
+              id="contactPhone"
+              name="phone"
+              placeholder="+7 (___) ___-__-__"
+              required
+              autocomplete="tel"
+            />
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="contactMsg">Комментарий</label>
+          <textarea
+            class="form-textarea"
+            id="contactMsg"
+            name="message"
+            placeholder="Расскажите о вашем проекте…"
+            rows="3"
+          ></textarea>
+        </div>
+        <label class="form-checkbox">
+          <input class="form-checkbox__input" type="checkbox" name="consent" required />
+          <span class="form-checkbox__label">
+            Я согласен на <a href="/privacy/">обработку персональных данных</a>
+          </span>
+        </label>
+        <button class="btn btn--accent btn--block btn--lg" type="submit">
+          Отправить заявку
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+{
+  "company": {
+    "name": "Часть Души",
+    "tagline": "Строительная компания",
+    "phone": "+78001234567",
+    "phoneFormatted": "8 800 123-45-67",
+    "email": "info@chast-dushi.ru",
+    "address": "г. Санкт-Петербург, ул. Строительная, 12, оф. 301",
+    "addressShort": "Санкт-Петербург",
+    "workingHours": "Пн–Пт 9:00–18:00, Сб 10:00–15:00",
+    "foundedYear": 2010,
+    "legalName": "ООО «Часть Души»"
+  },
+  "socials": {
+    "telegram": "https://t.me/chastdushi",
+    "vk": "https://vk.com/chastdushi",
+    "youtube": null
+  },
+  "stats": {
+    "builtHomes": 147,
+    "yearsOnMarket": 14,
+    "projectsInCatalog": 36,
+    "warrantyYears": 10,
+    "satisfactionPercent": 98
+  },
+  "seo": {
+    "defaultTitle": "Часть Души — строительство домов в Ленинградской области",
+    "titleTemplate": "%s · Часть Души",
+    "defaultDescription": "Строим загородные дома из газобетона, кирпича и керамических блоков в Ленинградской области. 147+ объектов, гарантия 10 лет.",
+    "ogImage": "/assets/og-image.jpg"
+  },
+  "mortgage": {
+    "defaultHousePrice": 10,
+    "defaultDownPayment": 2,
+    "defaultRate": 8.5,
+    "defaultTermYears": 20
+  }
+}
