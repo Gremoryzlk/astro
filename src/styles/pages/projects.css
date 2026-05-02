@@ -115,3 +115,9 @@
 @media (max-width: 580px) {
   .projects-grid { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 375px) {
+  .projects-grid { gap: var(--space-4); }
+  .page-header__title { font-size: var(--fs-3xl); }
+  .page-header__subtitle { font-size: var(--fs-sm); }
+}

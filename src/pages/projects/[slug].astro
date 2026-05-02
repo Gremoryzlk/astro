@@ -265,6 +265,7 @@ const totalDuration = project.timelinePhases.reduce((s, p) => s + p.durationMont
                   decoding="async"
                   width="600"
                   height="480"
+                  onerror="this.closest('.floor-plan-image').classList.add('floor-plan-image--broken')"
                 />
                 <div class="floor-plan-image__label">{plan.label} · {plan.area} м²</div>
                 <div class="floor-plan-image__zoom" aria-hidden="true">

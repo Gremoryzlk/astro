@@ -45,7 +45,7 @@ function initProjectFilter(): void {
   // Collect all cards once
   const cards: CardData[] = [...grid.querySelectorAll<HTMLElement>('[data-project]')].map(el => ({
     el,
-    floors:  parseInt(el.dataset.floors  ?? '1',  10),
+    floors:  parseFloat(el.dataset.floors  ?? '1'),
     area:    parseInt(el.dataset.area    ?? '0',  10),
     price:   parseInt(el.dataset.price   ?? '0',  10),
     rooms:   parseInt(el.dataset.rooms   ?? '0',  10),

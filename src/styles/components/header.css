@@ -133,6 +133,16 @@
               transform var(--dur-base) var(--ease-out);
   pointer-events: none;
 }
+/* Invisible bridge fills the visual gap between link bottom and dropdown top
+   so the hover state survives as the cursor travels between them */
+.site-nav__dropdown::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
 .site-nav__item:hover .site-nav__dropdown,
 .site-nav__item.is-open .site-nav__dropdown {
   opacity: 1;
@@ -285,4 +295,10 @@
 }
 @media (max-width: 360px) {
   .site-logo__name { font-size: var(--fs-md); }
+}
+@media (max-width: 375px) {
+  .site-header__actions { gap: var(--space-2); }
+  .site-header__phone { font-size: 12px; letter-spacing: 0; }
+  .burger { width: 36px; height: 36px; }
+  .mobile-menu { padding-inline: var(--space-4); }
 }

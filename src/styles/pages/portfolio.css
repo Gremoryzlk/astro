@@ -284,3 +284,15 @@
   .reels-grid { grid-template-columns: 1fr; }
   .reel-item { max-height: 240px; }
 }
+
+@media (max-width: 375px) {
+  .portfolio-excursion {
+    width: 64px; height: 64px;
+    font-size: 8px;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    padding: var(--space-2);
+  }
+  .portfolio-grid { gap: var(--space-4); }
+  .portfolio-card__name { font-size: var(--fs-base); }
+}

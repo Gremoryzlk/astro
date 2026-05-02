@@ -335,3 +335,24 @@ a, button, [role="button"], [tabindex] {
   }
   .section-header { margin-bottom: var(--space-8); }
 }
+
+/* ── 375px GLOBAL MOBILE ─────────────────────── */
+@media (max-width: 375px) {
+  :root {
+    --gutter: 0.875rem; /* tighter side margins */
+    --fs-4xl: 2rem;
+    --fs-3xl: 1.6rem;
+    --fs-2xl: 1.3rem;
+  }
+  .container { padding-inline: var(--gutter); }
+  .section-header__title { font-size: var(--fs-2xl); }
+  .btn--xl { padding-inline: var(--space-5); font-size: var(--fs-sm); }
+  .btn--lg { padding-inline: var(--space-4); font-size: var(--fs-sm); }
+  /* Cards */
+  .project-card__name { font-size: var(--fs-base); }
+  .project-card__meta { gap: var(--space-2); }
+  .project-card__meta-item { font-size: 11px; }
+  .project-card__price-value { font-size: var(--fs-lg); }
+  /* Stats / numbers */
+  .stats-item__value { font-size: var(--fs-3xl); }
+}

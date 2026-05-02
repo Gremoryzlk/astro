@@ -273,7 +273,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initCompareBarActions();
   syncButtonStates();
   renderCompareBar();
+
+  // If we're on the compare page, initialize the table directly.
+  // This avoids the race condition of the window.initComparePage pattern.
+  if (document.getElementById('compareTable')) {
+    initComparePage();
+  }
 });
 
-// Expose for compare/index.astro inline script
+// Keep the window export for any legacy inline callers
 (window as any).initComparePage = initComparePage;
